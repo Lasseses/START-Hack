@@ -106,7 +106,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-w-[80vw] mx-auto p-4 max-h-[85vh] overflow-y-auto">
+    <div className="w-full mt-20 mx-auto p-4 h-full overflow-y-auto">
       {isLoading ? (
         // Lade-Zustand
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
