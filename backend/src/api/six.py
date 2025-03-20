@@ -1,5 +1,15 @@
+"""
+Example Usage:
+
+from api.six import call_ohlcv
+from api.six import call_searchwithcriteria
+
+call_ohlcv('NVIDIA', '01.01.2020', '01.01.2021')
+call_searchwithcriteria('{"ebitda": "is positive", "employees": "more than 10000"}')
+"""
+
 import requests
-from helper.helper import previous_quarter
+import json
 
 
 def call_ohlcv(symbol, first, last):
@@ -19,13 +29,32 @@ def call_ohlcv(symbol, first, last):
         dict: A dictionary containing the JSON response from the API with the historical data.
 
     """
+    # Get data from six api
     url = ("https://idchat-api-containerapp01-dev.orangepebble-16234c4b."
            "switzerlandnorth.azurecontainerapps.io//ohlcv"
-           f"?query={symbol}&first={first}")
-    if last:
-        url = f"{url}&last={last}"
-    response = requests.post(url)
-    return response.json()
+           f"?query={symbol}&first={first}&last={last}")
+    response = requests.post(url).json()
+
+    # Unpack data
+    obj = json.loads(response["object"])
+    data = json.loads(obj["data"])
+    time_series_raw = json.loads(list(data.values())[0])
+
+    # Convert time series to rechart format
+    time_series = []
+    for timestamp, values in time_series_raw.items():
+        date_only = timestamp.split("T")[0]
+        
+        time_series.append({
+            'name': date_only,
+            'open': values['open'],
+            'high': values['high'],
+            'low': values['low'],
+            'close': values['close'],
+            'volume': values['vol']
+        })
+
+    return time_series
 
 
 def call_searchwithcriteria(query):
@@ -89,64 +118,50 @@ def call_searchwithcriteria(query):
         dict: A JSON dictionary representing the search results table.
     
     """
+    if isinstance(query, dict):
+        query = json.dumps(query)
+
+    # Get data from six api
     url = ("https://idchat-api-containerapp01-dev.orangepebble-16234c4b."
            "switzerlandnorth.azurecontainerapps.io//searchwithcriteria"
            f"?query={query}")
-    response = requests.post(url)
-    return response.json()
+    response = requests.post(url).json()
+
+    # convert six response to rechart format
+    obj = json.loads(response["object"])
+    tabular_data = json.loads(obj["data"][0])
+
+    return tabular_data
 
 
-def call_companydatasearch(query:str):
+def fetch_asset_allocation(customer_name):
     """
-    Retrieve a specific piece of information for a given company along 
-    with the corresponding value from the previous period to analyze trends.
-    
-    The query should be provided as a JSON-formatted string with the following structure:
-      '{"<symbol>": "<information>|<period>"}'
-      
-    Where:
-      - `<symbol>` is the company's ticker or name (e.g., "Caixabank").
-      - `<information>` is the specific data point to retrieve (e.g., "number of employees", "market capitalization", "EPS", etc.).
-      - `<period>` is either a four-digit year (e.g., "2023") or a quarter in the format "yyyyQq" (e.g., "2023Q1").
-    
-    Example:
-      '{"Caixabank": "number of employees|2023"}'
-    
-    The function returns the requested value along with the value for the previous period 
-    (e.g., last year or the preceding quarter) so that trends can be observed.
+    Fetches the asset allocation for a given customer.
+
+    This function takes a dictionary representing a customer's portfolio and returns a dictionary
+    with two keys: 'labels' (asset names) and 'data' (allocation percentages). This structure
+    is directly consumable by a frontend to render a pie chart.
+
+    Args:
+        customer (dict): A dictionary containing the customer's information, including a "portfolio" key.
+
+    Returns:
+        dict: A dictionary with keys 'labels' and 'data'.
     """
+    with open("res/asset_allocation.json", "r") as file:
+        data = json.load(file)
+    
+    customer_data = [customer_data for customer_data in data if customer_data["name"] == customer_name][0]
 
-    url = ("https://idchat-api-containerapp01-dev.orangepebble-16234c4b."
-           "switzerlandnorth.azurecontainerapps.io//companydatasearch"
-           f"?query={query}")
-    response = requests.post(url)
-    return response.json()
+    portfolio = customer.get("portfolio", [])
+    labels = [item.get("asset") for item in portfolio]
+    data = [item.get("allocation") for item in portfolio]
+    
+    # Optionally, validate if the allocations sum to 100%
+    total_allocation = sum(data)
+    if total_allocation != 100:
+        print(f"Warning: Total allocation for customer {customer.get('customer_id')} is {total_allocation}, expected 100.")
 
-
-
-# ========== TO BE REFINED ============
-
-def query_llm(query:str):
-    " Query gpt-4o-mini for a normal query. "
-    url = ("https://idchat-api-containerapp01-dev.orangepebble-16234c4b."
-           f"switzerlandnorth.azurecontainerapps.io//llm?query={query}")
-
-    response = requests.post(url)
-    return response.json()
-
-def query_agent(query:str):
-    " Query an agent that can use all of the tools below "
-    url = ("https://idchat-api-containerapp01-dev.orangepebble-16234c4b."
-           f"switzerlandnorth.azurecontainerapps.io//query?query={query}")
-
-    response = requests.post(url)
-    return response.json()
+    return {"labels": labels, "data": data}
 
 
-def summary(query:str):
-    " This tools retrieves basic information about a company. Query is the name of the company to search. "
-    url = ("https://idchat-api-containerapp01-dev.orangepebble-16234c4b."
-           "switzerlandnorth.azurecontainerapps.io//summary"
-           f"?query={query}")
-    response = requests.post(url)
-    return response.json()

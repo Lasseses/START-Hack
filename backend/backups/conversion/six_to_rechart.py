@@ -1,7 +1,8 @@
 import json
 
 
-def convert_ohlcv(ohlcv_query, ohlcv_response):
+def convert_ohlcv(ohlcv_query, ohlcv_response, diagram_type):
+    """ diagram_type can either be "line" or "candlestick" """
     # Extract time series from response
     obj = json.loads(ohlcv_response["object"])
     data = json.loads(obj["data"])
@@ -28,7 +29,7 @@ def convert_ohlcv(ohlcv_query, ohlcv_response):
 
     # Consolidate
     rechart_payload = {
-        "type": "time_series",
+        "type": diagram_type,
         "stock": stock,
         "title": title,
         "description": description,
@@ -63,5 +64,3 @@ def convert_searchwithcriteria(criteria_query, criteria_response):
 
     return rechart_payload
 
-def convert_companydatasearch(query, response):
-    ...
