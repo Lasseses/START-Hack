@@ -1,0 +1,178 @@
+[
+    {
+        "title": "Apple Stock Performance - Last Week",
+        "type": "CANDLE",
+        "content": "Candlestick chart showing Apple's (AAPL) opening, closing, high, and low prices for each day of the past week.",
+        "data": [
+            {
+                "name": "2025-03-13",
+                "open": 215.95,
+                "high": 216.8,
+                "low": 208.43,
+                "close": 209.68,
+                "volume": 17960529
+            },
+            {
+                "name": "2025-03-14",
+                "open": 211.29,
+                "high": 213.94,
+                "low": 209.58,
+                "close": 213.49,
+                "volume": 19871163
+            },
+            {
+                "name": "2025-03-17",
+                "open": 213.2,
+                "high": 215.2,
+                "low": 209.98,
+                "close": 214.0,
+                "volume": 15927492
+            },
+            {
+                "name": "2025-03-18",
+                "open": 214.26,
+                "high": 215.14,
+                "low": 211.49,
+                "close": 212.69,
+                "volume": 13695089
+            },
+            {
+                "name": "2025-03-19",
+                "open": 214.13,
+                "high": 218.76,
+                "low": 213.75,
+                "close": 215.24,
+                "volume": 21241193
+            }
+        ],
+        "position": 0
+    },
+    {
+        "title": "Apple Stock Performance - Last Few Weeks",
+        "type": "LINE",
+        "content": "Line graph illustrating Apple's (AAPL) closing price over the past few weeks to show the trend.",
+        "data": [
+            {
+                "name": "2025-02-27",
+                "open": 239.8,
+                "high": 242.45,
+                "low": 237.1,
+                "close": 237.3,
+                "volume": 13053427
+            },
+            {
+                "name": "2025-02-28",
+                "open": 237.04,
+                "high": 242.09,
+                "low": 234.51,
+                "close": 241.84,
+                "volume": 24082405
+            },
+            {
+                "name": "2025-03-03",
+                "open": 241.81,
+                "high": 244.0,
+                "low": 236.13,
+                "close": 238.03,
+                "volume": 15912804
+            },
+            {
+                "name": "2025-03-04",
+                "open": 238.0,
+                "high": 240.07,
+                "low": 234.71,
+                "close": 235.93,
+                "volume": 19601896
+            },
+            {
+                "name": "2025-03-05",
+                "open": 235.43,
+                "high": 236.55,
+                "low": 229.24,
+                "close": 235.74,
+                "volume": 13420548
+            },
+            {
+                "name": "2025-03-06",
+                "open": 234.5,
+                "high": 237.83,
+                "low": 233.33,
+                "close": 235.33,
+                "volume": 16539407
+            },
+            {
+                "name": "2025-03-07",
+                "open": 235.24,
+                "high": 241.37,
+                "low": 234.77,
+                "close": 239.07,
+                "volume": 14153596
+            },
+            {
+                "name": "2025-03-10",
+                "open": 235.66,
+                "high": 236.16,
+                "low": 224.23,
+                "close": 227.48,
+                "volume": 24487863
+            },
+            {
+                "name": "2025-03-11",
+                "open": 223.85,
+                "high": 225.83,
+                "low": 217.45,
+                "close": 220.84,
+                "volume": 23117608
+            },
+            {
+                "name": "2025-03-12",
+                "open": 220.14,
+                "high": 221.75,
+                "low": 214.91,
+                "close": 216.98,
+                "volume": 19233322
+            },
+            {
+                "name": "2025-03-13",
+                "open": 215.95,
+                "high": 216.8,
+                "low": 208.43,
+                "close": 209.68,
+                "volume": 17960529
+            },
+            {
+                "name": "2025-03-14",
+                "open": 211.29,
+                "high": 213.94,
+                "low": 209.58,
+                "close": 213.49,
+                "volume": 19871163
+            },
+            {
+                "name": "2025-03-17",
+                "open": 213.2,
+                "high": 215.2,
+                "low": 209.98,
+                "close": 214.0,
+                "volume": 15927492
+            },
+            {
+                "name": "2025-03-18",
+                "open": 214.26,
+                "high": 215.14,
+                "low": 211.49,
+                "close": 212.69,
+                "volume": 13695089
+            },
+            {
+                "name": "2025-03-19",
+                "open": 214.13,
+                "high": 218.76,
+                "low": 213.75,
+                "close": 215.24,
+                "volume": 21241193
+            }
+        ],
+        "position": 1
+    }
+]
