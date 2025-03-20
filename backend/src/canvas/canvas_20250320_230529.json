@@ -1,0 +1,235 @@
+[
+    {
+        "title": "Apple vs. Competitor Stock Price (Last 4 Weeks)",
+        "type": "LINE",
+        "content": "Line chart showing the stock price development of Apple (AAPL) and a competitor (e.g., Microsoft - MSFT) over the past four weeks.  X-axis: Time (days). Y-axis: Stock Price (USD).",
+        "data": [
+            {
+                "name": "2025-02-20",
+                "open": 244.95,
+                "high": 246.76,
+                "low": 244.29,
+                "close": 245.83,
+                "volume": 11050910
+            },
+            {
+                "name": "2025-02-21",
+                "open": 245.88,
+                "high": 248.69,
+                "low": 245.22,
+                "close": 245.55,
+                "volume": 16271774
+            },
+            {
+                "name": "2025-02-24",
+                "open": 245.0,
+                "high": 248.83,
+                "low": 244.77,
+                "close": 247.1,
+                "volume": 16400396
+            },
+            {
+                "name": "2025-02-25",
+                "open": 247.97,
+                "high": 249.98,
+                "low": 244.91,
+                "close": 247.04,
+                "volume": 14019714
+            },
+            {
+                "name": "2025-02-26",
+                "open": 244.31,
+                "high": 244.95,
+                "low": 239.13,
+                "close": 240.36,
+                "volume": 13073154
+            },
+            {
+                "name": "2025-02-27",
+                "open": 239.8,
+                "high": 242.45,
+                "low": 237.1,
+                "close": 237.3,
+                "volume": 13053427
+            },
+            {
+                "name": "2025-02-28",
+                "open": 237.04,
+                "high": 242.09,
+                "low": 234.51,
+                "close": 241.84,
+                "volume": 24082405
+            },
+            {
+                "name": "2025-03-03",
+                "open": 241.81,
+                "high": 244.0,
+                "low": 236.13,
+                "close": 238.03,
+                "volume": 15912804
+            },
+            {
+                "name": "2025-03-04",
+                "open": 238.0,
+                "high": 240.07,
+                "low": 234.71,
+                "close": 235.93,
+                "volume": 19601896
+            },
+            {
+                "name": "2025-03-05",
+                "open": 235.43,
+                "high": 236.55,
+                "low": 229.24,
+                "close": 235.74,
+                "volume": 13420548
+            },
+            {
+                "name": "2025-03-06",
+                "open": 234.5,
+                "high": 237.83,
+                "low": 233.33,
+                "close": 235.33,
+                "volume": 16539407
+            },
+            {
+                "name": "2025-03-07",
+                "open": 235.24,
+                "high": 241.37,
+                "low": 234.77,
+                "close": 239.07,
+                "volume": 14153596
+            },
+            {
+                "name": "2025-03-10",
+                "open": 235.66,
+                "high": 236.16,
+                "low": 224.23,
+                "close": 227.48,
+                "volume": 24487863
+            },
+            {
+                "name": "2025-03-11",
+                "open": 223.85,
+                "high": 225.83,
+                "low": 217.45,
+                "close": 220.84,
+                "volume": 23117608
+            },
+            {
+                "name": "2025-03-12",
+                "open": 220.14,
+                "high": 221.75,
+                "low": 214.91,
+                "close": 216.98,
+                "volume": 19233322
+            },
+            {
+                "name": "2025-03-13",
+                "open": 215.95,
+                "high": 216.8,
+                "low": 208.43,
+                "close": 209.68,
+                "volume": 17960529
+            },
+            {
+                "name": "2025-03-14",
+                "open": 211.29,
+                "high": 213.94,
+                "low": 209.58,
+                "close": 213.49,
+                "volume": 19871163
+            },
+            {
+                "name": "2025-03-17",
+                "open": 213.2,
+                "high": 215.2,
+                "low": 209.98,
+                "close": 214.0,
+                "volume": 15927492
+            },
+            {
+                "name": "2025-03-18",
+                "open": 214.26,
+                "high": 215.14,
+                "low": 211.49,
+                "close": 212.69,
+                "volume": 13695089
+            },
+            {
+                "name": "2025-03-19",
+                "open": 214.13,
+                "high": 218.76,
+                "low": 213.75,
+                "close": 215.24,
+                "volume": 21241193
+            }
+        ],
+        "position": 0
+    },
+    {
+        "title": "Company with Similar P/E Ratio to Apple",
+        "type": "TABLE",
+        "content": "Table displaying companies with Price-to-Earnings (P/E) ratios similar to Apple's current P/E ratio. Columns: Company Name, Ticker Symbol, P/E Ratio.",
+        "data": {
+            "Name": {
+                "0": "Ardagh MP Rg"
+            },
+            "SIX_ID": {
+                "0": "113057696,65,333"
+            },
+            "ISIN": {
+                "0": "LU2369833749"
+            },
+            "Valornumber (listing)": {
+                "0": "113057696"
+            },
+            "Bourse Code": {
+                "0": "NYX - \"New York Stock Exchange, Inc\" (65)"
+            },
+            "Currency": {
+                "0": "USD - \"US Dollar\" (333)"
+            },
+            "Ratio annual 1 - Return on Equity %": {
+                "0": "20"
+            }
+        },
+        "position": 1
+    },
+    {
+        "title": "John Doe's Asset Allocation",
+        "type": "PIE",
+        "content": "Pie chart showing the asset allocation of John Doe. Segments: Stocks, Bonds, Real Estate, Cash, Other. Values represent the percentage of total assets in each category.",
+        "data": [
+            {
+                "asset": "Domestic Stocks",
+                "allocation": 30
+            },
+            {
+                "asset": "International Stocks",
+                "allocation": 20
+            },
+            {
+                "asset": "Corporate Bonds",
+                "allocation": 15
+            },
+            {
+                "asset": "Government Bonds",
+                "allocation": 10
+            },
+            {
+                "asset": "Real Estate",
+                "allocation": 10
+            },
+            {
+                "asset": "Cash & Equivalents",
+                "allocation": 10
+            },
+            {
+                "asset": "Crypto",
+                "allocation": 5
+            }
+        ],
+        "position": 2
+    }
+]

@@ -24,11 +24,9 @@ enum ToolType {
 
     This function accepts a query string containing search criteria in JSON format.
     The JSON should follow a dictionary schema where keys are attributes and values
-    define the logical condition for filtering. For example:
+    define the logical condition for filtering (i.e. an actual value or similar). For example:
     
-        '{"ebitda": "is positive", "employees": "more than 10000"}'
-  
-    
+        '{"ebitda": "is positive", "employees": "more than 10000"}' i.e. '{"criteria": "condition"}'
     Args:
         query (str): A JSON-formatted string specifying the search criteria. Possible search criteria are: 
         [
