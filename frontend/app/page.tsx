@@ -1,6 +1,6 @@
-export default function MainPage() {
+export default function Home() {
 
-  return (
-    <h1>Team Hackepeter</h1>
+  return(
+    <h1>Test</h1>
   );
 }
