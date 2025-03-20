@@ -5,14 +5,11 @@ import dynamic from "next/dynamic";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
-import {
-  Tile,
-  CandlestickData,
-  PieData,
-  BarData,
-  AreaData,
-  TableData,
-} from "@/types/dashboard";
+import { Tile, CandlestickData, PieData, BarData, AreaData, TableData } from "@/types/dashboard";
+import Lottie from "lottie-react";
+// Import your lottie animation file
+// Adjust the path to match where your .lottie file is stored
+import animationData from "@/public/animations/main_page.json";
 
 // Typisiere die Props für jede Komponente
 interface CandleStickChartProps {
@@ -50,20 +47,14 @@ interface DataTableProps {
 }
 
 // Dynamischer Import der Komponenten
-const CandleStickChart = dynamic<CandleStickChartProps>(
-  () => import("@/components/candlestick"),
-  {
-    ssr: false,
-    loading: () => <Skeleton className="w-full h-[300px] rounded-lg" />,
-  }
-);
-const AreaChart = dynamic<AreaChartProps>(
-  () => import("@/components/areachart"),
-  {
-    ssr: false,
-    loading: () => <Skeleton className="w-full h-[300px] rounded-lg" />,
-  }
-);
+const CandleStickChart = dynamic<CandleStickChartProps>(() => import("@/components/candlestick"), {
+  ssr: false,
+  loading: () => <Skeleton className="w-full h-[300px] rounded-lg" />,
+});
+const AreaChart = dynamic<AreaChartProps>(() => import("@/components/areachart"), {
+  ssr: false,
+  loading: () => <Skeleton className="w-full h-[300px] rounded-lg" />,
+});
 const PieChart = dynamic<PieChartProps>(() => import("@/components/piechart"), {
   ssr: false,
   loading: () => <Skeleton className="w-full h-[300px] rounded-lg" />,
@@ -72,24 +63,16 @@ const BarChart = dynamic<BarChartProps>(() => import("@/components/barchart"), {
   ssr: false,
   loading: () => <Skeleton className="w-full h-[300px] rounded-lg" />,
 });
-const DataTable = dynamic<DataTableProps>(
-  () => import("@/components/datatable"),
-  {
-    ssr: false,
-    loading: () => <Skeleton className="w-full h-[300px] rounded-lg" />,
-  }
-);
+const DataTable = dynamic<DataTableProps>(() => import("@/components/datatable"), {
+  ssr: false,
+  loading: () => <Skeleton className="w-full h-[300px] rounded-lg" />,
+});
 
 // Komponente zur Auswahl des richtigen Tile-Typs
 const TileRenderer: React.FC<{ tile: Tile }> = ({ tile }) => {
   switch (tile.type) {
     case "candlestick":
-      return (
-        <CandleStickChart
-          candlestickData={tile.data}
-          metadata={tile.metadata}
-        />
-      );
+      return <CandleStickChart candlestickData={tile.data} metadata={tile.metadata} />;
     case "pie":
       return <PieChart pieSeries={tile.data} metadata={tile.metadata} />;
     case "bar":
@@ -152,13 +135,19 @@ export default function Dashboard() {
         </div>
       ) : (
         // Anfangszustand oder leeres Dashboard
-        <div className="text-center py-20">
-          <h2 className="text-xl font-semibold mb-2">
-            Willkommen zu deinem Dashboard
-          </h2>
-          <p className="text-zinc-400">
-            Stelle eine Frage, um Visualisierungen deiner Daten zu erhalten.
-          </p>
+        <div className="text-center py-12">
+          <h2 className="text-xl font-semibold mt-10 mb-2">Welcome to your AssetIQ Dashboard</h2>
+          <p className="text-zinc-400 mb-8">Create and modify your dashboard by describing your needs via the form below.</p>
+
+          {/* Lottie Animation */}
+          <div className="w-[400px] h-[400px] md:w-[500px] md:h-[500px] mx-auto">
+            <Lottie 
+              animationData={animationData} 
+              loop={true} 
+              autoplay={true}
+              className="w-full h-full"
+            />
+          </div>
         </div>
       )}
     </div>
