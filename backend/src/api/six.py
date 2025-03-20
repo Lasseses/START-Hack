@@ -136,17 +136,20 @@ def call_searchwithcriteria(query):
 
 def fetch_asset_allocation(customer_name):
     """
-    Fetches the asset allocation for a given customer.
+    Retrieves the asset allocation for a specified customer from a JSON file.
 
-    This function takes a dictionary representing a customer's portfolio and returns a dictionary
-    with two keys: 'labels' (asset names) and 'data' (allocation percentages). This structure
-    is directly consumable by a frontend to render a pie chart.
+    This function reads a JSON file containing multiple customers' financial portfolios 
+    and extracts the asset allocation for the given customer. The returned data is 
+    structured as a list of dictionaries, where each dictionary represents an asset with 
+    its corresponding allocation percentage.
 
     Args:
-        customer (dict): A dictionary containing the customer's information, including a "portfolio" key.
+        customer_name (str): The name of the customer whose asset allocation is to be retrieved.
 
     Returns:
-        dict: A dictionary with keys 'labels' and 'data'.
+        list[dict]: A list of dictionaries, each containing:
+            - "asset" (str): The name of the asset.
+            - "allocation" (float): The percentage allocation of the asset.
     """
     with open("res/asset_allocation.json", "r") as file:
         data = json.load(file)
