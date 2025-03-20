@@ -1,51 +1,125 @@
+// components/elements/Dashboard.tsx
 "use client";
+import { useDashboard } from "@/context/DashboardContext";
+import dynamic from "next/dynamic";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
+import { Tile, CandlestickData, PieData, BarData, AreaData, TableData } from "@/types/dashboard";
 
-import React from "react";
-import TileFactory from "@/components/tile-factory";
-import CandleChart from "@/components/candle-chart";
+// Typisiere die Props für jede Komponente
+interface CandleStickChartProps {
+  candlestickData: CandlestickData[];
+  metadata?: any;
+}
 
-// Sample data for the Sankey chart
-const customData = {
-  nodes: [{ name: "Custom-Visit" }, { name: "Custom-Click" }],
-  links: [{ source: 0, target: 1, value: 12345 }],
+interface AreaChartProps {
+  areaSeries: AreaData[];
+  metadata?: any;
+}
+
+interface PieChartProps {
+  pieSeries: PieData;
+  metadata?: any;
+}
+
+interface BarChartProps {
+  barSeries: BarData[];
+  metadata?: any;
+}
+
+interface DataTableProps {
+  tableData: TableData[];
+  metadata?: any;
+}
+
+// Dynamischer Import der Komponenten
+const CandleStickChart = dynamic<CandleStickChartProps>(() => import("@/components/candlestick"), { 
+  ssr: false,
+  loading: () => <Skeleton className="w-full h-[300px] rounded-lg" />
+});
+const AreaChart = dynamic<AreaChartProps>(() => import("@/components/areachart"), { 
+  ssr: false,
+  loading: () => <Skeleton className="w-full h-[300px] rounded-lg" />
+});
+const PieChart = dynamic<PieChartProps>(() => import("@/components/piechart"), { 
+  ssr: false,
+  loading: () => <Skeleton className="w-full h-[300px] rounded-lg" />
+});
+const BarChart = dynamic<BarChartProps>(() => import("@/components/barchart"), { 
+  ssr: false,
+  loading: () => <Skeleton className="w-full h-[300px] rounded-lg" />
+});
+const DataTable = dynamic<DataTableProps>(() => import("@/components/datatable"), { 
+  ssr: false,
+  loading: () => <Skeleton className="w-full h-[300px] rounded-lg" />
+});
+
+// Komponente zur Auswahl des richtigen Tile-Typs
+const TileRenderer: React.FC<{ tile: Tile }> = ({ tile }) => {
+  switch (tile.type) {
+    case "candlestick":
+      return <CandleStickChart candlestickData={tile.data} metadata={tile.metadata} />;
+    case "pie":
+      return <PieChart pieSeries={tile.data} metadata={tile.metadata} />;
+    case "bar":
+      return <BarChart barSeries={tile.data} metadata={tile.metadata} />;
+    case "area":
+      return <AreaChart areaSeries={tile.data} metadata={tile.metadata} />;
+    case "table":
+      return <DataTable tableData={tile.data} metadata={tile.metadata} />;
+    default:
+      return (
+        <div className="bg-zinc-800 p-4 rounded-lg">
+          <p>Unbekannter Tile-Typ: {tile.type}</p>
+        </div>
+      );
+  }
 };
 
-// Fallback data for the Candle chart (could also be passed as data)
-const lineChartFallback = [
-  {
-    name: "2024-01-02",
-    open: 49.27,
-    close: 48.17,
-    high: 49.3,
-    low: 47.6,
-    volume: 80777550,
-  },
-  {
-    name: "2024-01-03",
-    open: 48.1,
-    close: 48.5,
-    high: 49.0,
-    low: 48.0,
-    volume: 80000000,
-  },
-];
-
 export default function Dashboard() {
+  const { tiles, isLoading, error } = useDashboard();
+
+  if (error) {
+    return (
+      <div className="min-w-[80vw] p-4 max-h-[85vh] overflow-y-auto">
+        <Alert variant="destructive" className="mb-6">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Fehler</AlertTitle>
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      </div>
+    );
+  }
+
   return (
-<div className="grid grid-cols-6 grid-rows-3 gap-4 px-4" style={{ gridTemplateRows: 'minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr)', maxHeight: '85vh' }}>
-      <div>
-        <TileFactory
-          title="Mein Sankey-Diagramm"
-          fallbackData={null}
-          data={customData}
-        >
-            <CandleChart className="border border-zinc-800 rounded-sm" />
-        </TileFactory>
-      </div>
-      
-      <div className="col-span-3 row-span-2 ">
-        <CandleChart className="border border-zinc-800 rounded-sm" />
-      </div>
+    <div className="min-w-[80vw] mx-auto p-4 max-h-[85vh] overflow-y-auto">
+      {isLoading ? (
+        // Lade-Zustand
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <Skeleton className="w-full h-[300px] rounded-lg" />
+          <Skeleton className="w-full h-[300px] rounded-lg" />
+          <Skeleton className="w-full h-[300px] rounded-lg" />
+          <Skeleton className="w-full h-[300px] rounded-lg" />
+        </div>
+      ) : tiles.length > 0 ? (
+        // Dynamisches Grid-Layout basierend auf den Tile-Größen
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {tiles.map((tile, index) => (
+            <div key={index} className={tile.metadata?.fullWidth ? "col-span-full" : ""}>
+              <TileRenderer tile={tile} />
+            </div>
+          ))}
+        </div>
+      ) : (
+        // Anfangszustand oder leeres Dashboard
+        <div className="text-center py-20">
+          <h2 className="text-xl font-semibold mb-2">Willkommen zu deinem Dashboard</h2>
+          <p className="text-zinc-400">
+            Stelle eine Frage, um Visualisierungen deiner Daten zu erhalten.
+          </p>
+        </div>
+      )}
     </div>
   );
 }

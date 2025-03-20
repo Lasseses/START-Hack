@@ -1,0 +1,30 @@
+[
+    {
+        "title": "European Tech Sector Stock Performance Overview",
+        "type": "LINE",
+        "content": "Line chart showing the overall stock performance of the European technology sector index (e.g., STOXX Europe 600 Technology) over the past year.",
+        "data": "",
+        "position": 0
+    },
+    {
+        "title": "SAP Stock Performance",
+        "type": "CANDLE",
+        "content": "Candlestick chart displaying the historical stock price of SAP (SAP.DE) over the past year, including open, high, low, and close values.",
+        "data": "",
+        "position": 1
+    },
+    {
+        "title": "Adyen Stock Performance",
+        "type": "CANDLE",
+        "content": "Candlestick chart displaying the historical stock price of Adyen (ADYEN.AS) over the past year, including open, high, low, and close values.",
+        "data": "",
+        "position": 2
+    },
+    {
+        "title": "Sector Performance Comparison",
+        "type": "BAR",
+        "content": "Bar chart comparing the percentage change in stock price performance of the European technology sector index, SAP, and Adyen over the past year. Helps visualize relative growth.",
+        "data": "",
+        "position": 3
+    }
+]
