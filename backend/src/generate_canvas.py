@@ -24,7 +24,6 @@ TOOLS = {
 }
 
 
-# Set up logging
 log_file_path = os.path.join(backend_path, "generate_canvas.log")
 logging.basicConfig(
     filename=log_file_path,
@@ -32,7 +31,13 @@ logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(message)s",
 )
 
-logging.debug("Logging setup complete.")
+console_handler = logging.StreamHandler()
+console_handler.setLevel(logging.INFO)
+console_formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+console_handler.setFormatter(console_formatter)
+
+logging.getLogger().addHandler(console_handler)
+
 
 dotenv.load_dotenv()
 
@@ -40,7 +45,7 @@ reset_baml_env_vars(dict(os.environ))
 
 
 class DataTile(Tile):
-    data: list
+    data: list | dict | str | None
     position: int
 
 
@@ -58,7 +63,16 @@ def generate_canvas(user_input: str, canvas_context: str = "") -> list[DataTile]
         logging.debug("Generating tool call for tile: %s", tile)
         tool_call = generate_tool_call(tile=tile, context="", date=use_date)
         logging.info("Generated tool call: %s", tool_call)
-        data = perform_tool_call(tool_call)
+        data = None
+        try:
+            data = perform_tool_call(tool_call)
+            # data = json.loads(data)
+        except json.JSONDecodeError:
+            logging.error("Data is not JSON serializable. Raw data: %s", data)
+            continue
+        except Exception as e:
+            logging.error("Error performing tool call: %s", e)
+            continue
         data_tile = DataTile(
             title=tile.title,
             type=tile.type,
@@ -91,10 +105,31 @@ def generate_tool_call(tile: Tile, context: str = "", date: bool = False) -> str
 
 
 def perform_tool_call(tool_call) -> str:
-    # TODO: Add api calls here
-    function = TOOLS[tool_call.type]
-    inputs_dict = dict(item.split("=") for item in tool_call.inputs)
-    response = function(**inputs_dict)
+    # Retrieve the function from TOOLS using the tool type.
+    try:
+        function = TOOLS[tool_call.type]
+    except KeyError as e:
+        raise KeyError(f"Tool type '{tool_call.type}' not found in TOOLS. ({e})")
+
+    # Build the inputs dictionary from tool_call.inputs.
+    inputs_dict = {}
+    for item in tool_call.inputs:
+        try:
+            key, value = item.split("=", 1)
+            inputs_dict[key] = value
+        except ValueError as e:
+            raise ValueError(
+                f"Unable to parse input '{item}'. Expected format key=value. ({e})"
+            )
+
+    # Execute the tool function with the provided inputs.
+    try:
+        response = function(**inputs_dict)
+    except Exception as e:
+        raise Exception(
+            f"Error executing tool '{tool_call.type}' with inputs {inputs_dict}: {e}"
+        )
+
     return response
 
 

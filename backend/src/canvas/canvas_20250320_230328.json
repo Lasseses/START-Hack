@@ -1,0 +1,367 @@
+[
+    {
+        "title": "Apple (AAPL) Stock Price - Last 4 Weeks",
+        "type": "LINE",
+        "content": "Line chart showing the historical stock price of Apple (AAPL) over the past four weeks. X-axis represents time (daily), and Y-axis represents stock price.",
+        "data": [
+            {
+                "name": "2025-02-20",
+                "open": 244.95,
+                "high": 246.76,
+                "low": 244.29,
+                "close": 245.83,
+                "volume": 11050910
+            },
+            {
+                "name": "2025-02-21",
+                "open": 245.88,
+                "high": 248.69,
+                "low": 245.22,
+                "close": 245.55,
+                "volume": 16271774
+            },
+            {
+                "name": "2025-02-24",
+                "open": 245.0,
+                "high": 248.83,
+                "low": 244.77,
+                "close": 247.1,
+                "volume": 16400396
+            },
+            {
+                "name": "2025-02-25",
+                "open": 247.97,
+                "high": 249.98,
+                "low": 244.91,
+                "close": 247.04,
+                "volume": 14019714
+            },
+            {
+                "name": "2025-02-26",
+                "open": 244.31,
+                "high": 244.95,
+                "low": 239.13,
+                "close": 240.36,
+                "volume": 13073154
+            },
+            {
+                "name": "2025-02-27",
+                "open": 239.8,
+                "high": 242.45,
+                "low": 237.1,
+                "close": 237.3,
+                "volume": 13053427
+            },
+            {
+                "name": "2025-02-28",
+                "open": 237.04,
+                "high": 242.09,
+                "low": 234.51,
+                "close": 241.84,
+                "volume": 24082405
+            },
+            {
+                "name": "2025-03-03",
+                "open": 241.81,
+                "high": 244.0,
+                "low": 236.13,
+                "close": 238.03,
+                "volume": 15912804
+            },
+            {
+                "name": "2025-03-04",
+                "open": 238.0,
+                "high": 240.07,
+                "low": 234.71,
+                "close": 235.93,
+                "volume": 19601896
+            },
+            {
+                "name": "2025-03-05",
+                "open": 235.43,
+                "high": 236.55,
+                "low": 229.24,
+                "close": 235.74,
+                "volume": 13420548
+            },
+            {
+                "name": "2025-03-06",
+                "open": 234.5,
+                "high": 237.83,
+                "low": 233.33,
+                "close": 235.33,
+                "volume": 16539407
+            },
+            {
+                "name": "2025-03-07",
+                "open": 235.24,
+                "high": 241.37,
+                "low": 234.77,
+                "close": 239.07,
+                "volume": 14153596
+            },
+            {
+                "name": "2025-03-10",
+                "open": 235.66,
+                "high": 236.16,
+                "low": 224.23,
+                "close": 227.48,
+                "volume": 24487863
+            },
+            {
+                "name": "2025-03-11",
+                "open": 223.85,
+                "high": 225.83,
+                "low": 217.45,
+                "close": 220.84,
+                "volume": 23117608
+            },
+            {
+                "name": "2025-03-12",
+                "open": 220.14,
+                "high": 221.75,
+                "low": 214.91,
+                "close": 216.98,
+                "volume": 19233322
+            },
+            {
+                "name": "2025-03-13",
+                "open": 215.95,
+                "high": 216.8,
+                "low": 208.43,
+                "close": 209.68,
+                "volume": 17960529
+            },
+            {
+                "name": "2025-03-14",
+                "open": 211.29,
+                "high": 213.94,
+                "low": 209.58,
+                "close": 213.49,
+                "volume": 19871163
+            },
+            {
+                "name": "2025-03-17",
+                "open": 213.2,
+                "high": 215.2,
+                "low": 209.98,
+                "close": 214.0,
+                "volume": 15927492
+            },
+            {
+                "name": "2025-03-18",
+                "open": 214.26,
+                "high": 215.14,
+                "low": 211.49,
+                "close": 212.69,
+                "volume": 13695089
+            },
+            {
+                "name": "2025-03-19",
+                "open": 214.13,
+                "high": 218.76,
+                "low": 213.75,
+                "close": 215.24,
+                "volume": 21241193
+            }
+        ],
+        "position": 0
+    },
+    {
+        "title": "Microsoft (MSFT) Stock Price - Last 4 Weeks",
+        "type": "LINE",
+        "content": "Line chart showing the historical stock price of Microsoft (MSFT) over the past four weeks. X-axis represents time (daily), and Y-axis represents stock price. This is a competitor to Apple.",
+        "data": [
+            {
+                "name": "2025-02-20",
+                "open": 415.5,
+                "high": 419.31,
+                "low": 412.6,
+                "close": 416.13,
+                "volume": 7192119
+            },
+            {
+                "name": "2025-02-21",
+                "open": 417.27,
+                "high": 418.0,
+                "low": 407.91,
+                "close": 408.21,
+                "volume": 8635714
+            },
+            {
+                "name": "2025-02-24",
+                "open": 409.31,
+                "high": 409.37,
+                "low": 399.34,
+                "close": 404.0,
+                "volume": 8714488
+            },
+            {
+                "name": "2025-02-25",
+                "open": 400.82,
+                "high": 401.915,
+                "low": 396.72,
+                "close": 397.9,
+                "volume": 7860665
+            },
+            {
+                "name": "2025-02-26",
+                "open": 397.67,
+                "high": 403.6,
+                "low": 394.27,
+                "close": 399.73,
+                "volume": 5371414
+            },
+            {
+                "name": "2025-02-27",
+                "open": 401.2,
+                "high": 405.69,
+                "low": 392.22,
+                "close": 392.53,
+                "volume": 6897831
+            },
+            {
+                "name": "2025-02-28",
+                "open": 392.63,
+                "high": 397.63,
+                "low": 386.62,
+                "close": 396.99,
+                "volume": 14584474
+            },
+            {
+                "name": "2025-03-03",
+                "open": 398.64,
+                "high": 398.64,
+                "low": 386.2,
+                "close": 388.49,
+                "volume": 7648081
+            },
+            {
+                "name": "2025-03-04",
+                "open": 383.44,
+                "high": 392.58,
+                "low": 381.0,
+                "close": 388.61,
+                "volume": 10522840
+            },
+            {
+                "name": "2025-03-05",
+                "open": 389.45,
+                "high": 401.67,
+                "low": 388.86,
+                "close": 401.02,
+                "volume": 8699713
+            },
+            {
+                "name": "2025-03-06",
+                "open": 393.77,
+                "high": 402.14,
+                "low": 393.3,
+                "close": 396.89,
+                "volume": 8537707
+            },
+            {
+                "name": "2025-03-07",
+                "open": 392.09,
+                "high": 394.76,
+                "low": 385.56,
+                "close": 393.31,
+                "volume": 7374362
+            },
+            {
+                "name": "2025-03-10",
+                "open": 385.57,
+                "high": 386.35,
+                "low": 377.23,
+                "close": 380.16,
+                "volume": 11308901
+            },
+            {
+                "name": "2025-03-11",
+                "open": 379.0,
+                "high": 385.96,
+                "low": 376.92,
+                "close": 380.45,
+                "volume": 9390729
+            },
+            {
+                "name": "2025-03-12",
+                "open": 382.71,
+                "high": 385.2,
+                "low": 379.0,
+                "close": 383.27,
+                "volume": 7385095
+            },
+            {
+                "name": "2025-03-13",
+                "open": 383.0,
+                "high": 385.25,
+                "low": 377.46,
+                "close": 378.77,
+                "volume": 6676121
+            },
+            {
+                "name": "2025-03-14",
+                "open": 379.62,
+                "high": 389.79,
+                "low": 379.62,
+                "close": 388.56,
+                "volume": 7428584
+            },
+            {
+                "name": "2025-03-17",
+                "open": 386.77,
+                "high": 392.7,
+                "low": 385.57,
+                "close": 388.7,
+                "volume": 8719080
+            },
+            {
+                "name": "2025-03-18",
+                "open": 387.37,
+                "high": 387.37,
+                "low": 381.15,
+                "close": 383.52,
+                "volume": 6588844
+            },
+            {
+                "name": "2025-03-19",
+                "open": 385.58,
+                "high": 389.68,
+                "low": 384.0,
+                "close": 387.82,
+                "volume": 8540284
+            }
+        ],
+        "position": 1
+    },
+    {
+        "title": "Companies with Similar P/E Ratio to Apple",
+        "type": "TABLE",
+        "content": "Table displaying companies with Price-to-Earnings (P/E) ratios similar to Apple's current P/E ratio. Columns include: Company Name, Ticker Symbol, and P/E Ratio.",
+        "data": {
+            "Name": {
+                "0": "Ardagh MP Rg"
+            },
+            "SIX_ID": {
+                "0": "113057696,65,333"
+            },
+            "ISIN": {
+                "0": "LU2369833749"
+            },
+            "Valornumber (listing)": {
+                "0": "113057696"
+            },
+            "Bourse Code": {
+                "0": "NYX - \"New York Stock Exchange, Inc\" (65)"
+            },
+            "Currency": {
+                "0": "USD - \"US Dollar\" (333)"
+            },
+            "Ratio annual 1 - Return on Equity %": {
+                "0": "20"
+            }
+        },
+        "position": 2
+    }
+]

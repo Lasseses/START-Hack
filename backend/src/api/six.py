@@ -28,7 +28,7 @@ logging.basicConfig(
 logging.debug("Logging setup complete.")
 
 
-def call_ohlcv(symbol, first, last) -> list[dict]:
+def call_ohlcv(symbol: str, first: str, last: str) -> list[dict]:
     """
     Retrieve historical OHLCV data for a given company.
 
@@ -80,7 +80,7 @@ def call_ohlcv(symbol, first, last) -> list[dict]:
     return time_series
 
 
-def call_searchwithcriteria(query):
+def call_searchwithcriteria(query: str) -> dict:
     """
     Search for companies or stocks based on specified criteria.
 
@@ -161,7 +161,7 @@ def call_searchwithcriteria(query):
     return tabular_data
 
 
-def fetch_asset_allocation(customer_name):
+def fetch_asset_allocation(customer_name: str) -> list[dict]:
     """
     Retrieves the asset allocation for a specified customer from a JSON file.
 
