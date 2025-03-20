@@ -77,18 +77,18 @@ export default function PieChart({ pieSeries, metadata }: PieChartProps) {
   const processedSeries = sortType !== "none" ? sortData() : pieSeries;
   
   // Default colors if none provided - professional palette
-  const baseColors = processedSeries.colors || [
-    "#0E72CC", // Bloomberg Blue
-    "#3AA065", // Green
-    "#C73443", // Red
-    "#6930C3", // Purple
-    "#E26312", // Orange
-    "#1A91EB", // Light Blue
-    "#5DC983", // Light Green
-    "#E05A69", // Light Red
-    "#9271D2", // Light Purple
-    "#F89748"  // Light Orange
-  ];
+  const baseColors = [
+    "#4F87C5", 
+    "#6EAF89",
+    "#CC6B73",
+    "#8E74BB",
+    "#E19052",
+    "#71A8D7",
+    "#88C7A0",
+    "#D6868E",
+    "#A487CA",
+    "#EEA877" 
+];
   
   // Apply gradient effect if enabled
   const getColors = () => {
@@ -219,7 +219,7 @@ export default function PieChart({ pieSeries, metadata }: PieChartProps) {
     },
     labels: processedSeries.labels,
     legend: {
-      position: metadata?.legendPosition || "bottom",
+      position: metadata?.legendPosition || "right",
       horizontalAlign: "center",
       fontFamily: "'Inter', 'SF Pro Display', sans-serif",
       fontSize: "11px",
@@ -426,9 +426,10 @@ export default function PieChart({ pieSeries, metadata }: PieChartProps) {
   const title = metadata?.title || "Distribution Analysis";
   const description = metadata?.description || "Distribution by category";
 
+
   return (
-    <Card className="border-slate-200 shadow overflow-hidden h-full w-full flex flex-col">
-      <CardHeader className="bg-slate-50 border-b border-slate-200 py-1.5 px-4">
+    <Card className="overflow-hidden border-0 shadow-md relative">
+      <CardHeader className="bg-slate-50 border-b border-slate-200 py-1.5 px-4 bg-gradient-to-br from-indigo-500/10 to-cyan-500/10">
         <div className="flex justify-between items-center">
           <div className="flex flex-col">
             <div className="flex items-center">
@@ -475,7 +476,7 @@ export default function PieChart({ pieSeries, metadata }: PieChartProps) {
         </div>
       </CardHeader>
       
-      <CardContent className="p-0 flex-1 w-full">
+      <CardContent className="py-6 bg-white/80 flex-1 w-full h-[300px]">
         <ReactApexChart
           options={pieOptions}
           series={processedSeries.series}
@@ -487,7 +488,7 @@ export default function PieChart({ pieSeries, metadata }: PieChartProps) {
       
       {/* Optional footer with additional metrics */}
       {outliers && (
-        <CardFooter className="py-1.5 px-4 border-t border-slate-200 bg-slate-50 flex justify-between">
+        <CardFooter className="py-1.5 px-4 border-t border-slate-200 bg-slate-50 flex justify-between bg-gradient-to-br from-indigo-500/20 to-cyan-500/20">
           <div className="flex text-xs text-slate-600 items-center">
             <span className="font-medium text-slate-500 mr-1.5">Highest:</span>
             <span className="text-slate-800 font-semibold">{outliers.top.label}</span>

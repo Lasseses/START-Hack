@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { cn } from "@/lib/utils"
 import { TableData } from "@/types/dashboard"
@@ -89,7 +89,7 @@ export default function DataTable({ tableData = [], metadata }: DataTableProps) 
 
   return (
     <Card className="border-slate-200 shadow-md">
-      <CardHeader className="bg-slate-50 border-b border-slate-200">
+      <CardHeader className="bg-slate-50 border-b border-slate-200 bg-gradient-to-br from-indigo-500/10 to-cyan-500/10">
         <CardTitle className="text-slate-800 text-xl">{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
@@ -151,6 +151,11 @@ export default function DataTable({ tableData = [], metadata }: DataTableProps) 
           </div>
         )}
       </CardContent>
+
+      {/* <CardFooter className="py-1.5 px-4 border-t border-slate-200 bg-slate-50 flex justify-between bg-gradient-to-br from-indigo-500/10 to-cyan-500/10">
+          <div className="py-2">
+          </div>
+        </CardFooter> */}
     </Card>
   )
 }

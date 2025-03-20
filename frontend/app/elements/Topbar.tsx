@@ -4,10 +4,11 @@ import { User } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 export default function Topbar() {
-  const router = useRouter();
-
   const handleRefresh = () => {
-    router.refresh();
+    // Use window.location for a full page refresh
+    if (typeof window !== 'undefined') {
+      window.location.reload();
+    }
   };
 
   return (

@@ -592,7 +592,7 @@ export default function AreaChart({ areaSeries, metadata }: AreaChartProps) {
 
   return (
     <Card className="border-slate-200 shadow overflow-hidden h-full w-full flex flex-col">
-      <CardHeader className="bg-slate-50 border-b border-slate-200 py-1.5 px-4">
+      <CardHeader className="border-b border-slate-200 py-1.5 px-4 bg-gradient-to-br from-indigo-500/10 to-cyan-500/10">
         <div className="flex justify-between items-center">
           <div className="flex flex-col">
             <div className="flex items-center">
@@ -645,7 +645,7 @@ export default function AreaChart({ areaSeries, metadata }: AreaChartProps) {
         )}
       </CardHeader>
       
-      <CardContent className="p-0 flex-1 w-full">
+      <CardContent className="p-0 flex-1 w-full bg-white">
         <ReactApexChart
           options={areaOptions}
           series={[...filteredSeries, ...benchmarkSeries]}
@@ -657,7 +657,7 @@ export default function AreaChart({ areaSeries, metadata }: AreaChartProps) {
       
       {/* Optional footer with additional metrics */}
       {performanceData.length > 0 && (
-        <CardFooter className="py-1.5 px-4 border-t border-slate-200 bg-slate-50 flex justify-between">
+        <CardFooter className="py-1.5 px-4 border-t border-slate-200 flex justify-between bg-gradient-to-br from-indigo-500/10 to-cyan-500/10">
           <div className="flex text-xs text-slate-500 items-center">
             <FileBarChart className="h-3.5 w-3.5 mr-1 text-slate-400" />
             <span className="font-medium mr-1">Volatility:</span>
