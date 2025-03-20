@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    --background: 216 13.2% 14.9%;
+    --background: hsl(216, 79%, 11%);
     --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
@@ -34,7 +34,7 @@
   }
 
   .dark {
-    --background: 240 10% 3.9%;
+    --background: hsl(216 13.2% 14.9%);
     --foreground: 0 0% 98%;
     --card: 240 10% 3.9%;
     --card-foreground: 0 0% 98%;
@@ -65,3 +65,6 @@
   }
 }
 
+.vsc-bg {
+  background-color: #21252B !important; /* Override with your desired color */
+}

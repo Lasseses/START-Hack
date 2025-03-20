@@ -7,7 +7,7 @@ import UserInput from "./elements/UserInput";
 export default function Home() {
   return (
     <DashboardProvider>
-      <div className="flex min-h-screen flex-col bg-zinc-950 text-zinc-100">
+      <div className="flex min-h-screen flex-col text-zinc-100 vsc-bg">
         <div className="h-[vh-5]">
           <Topbar />
         </div>
