@@ -43,16 +43,15 @@ def all_succeeded(checks: Dict[CheckName, Check]) -> bool:
 class DiagramType(str, Enum):
     
     LINE = "LINE"
-    BAR = "BAR"
     PIE = "PIE"
     CANDLE = "CANDLE"
-    KPI = "KPI"
     TABLE = "TABLE"
 
 class ToolType(str, Enum):
     
     OHLCV = "OHLCV"
     SEARCHWITHCRITERIA = "SEARCHWITHCRITERIA"
+    FETCH_ASSET_ALLOCATION = "FETCH_ASSET_ALLOCATION"
 
 class Canvas(BaseModel):
     tiles: List["Tile"]

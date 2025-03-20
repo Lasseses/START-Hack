@@ -13,7 +13,16 @@ import baml_client as client
 
 # from baml_client.async_client import b as b_async # TODO use async_client
 from baml_client import reset_baml_env_vars
-from baml_client.types import Tile
+from baml_client.types import Tile, ToolType
+
+from api.six import call_ohlcv, call_searchwithcriteria, fetch_asset_allocation
+
+TOOLS = {
+    ToolType.OHLCV: call_ohlcv,
+    ToolType.SEARCHWITHCRITERIA: call_searchwithcriteria,
+    ToolType.FETCH_ASSET_ALLOCATION: fetch_asset_allocation,
+}
+
 
 # Set up logging
 log_file_path = os.path.join(backend_path, "generate_canvas.log")
@@ -31,7 +40,7 @@ reset_baml_env_vars(dict(os.environ))
 
 
 class DataTile(Tile):
-    data: str
+    data: list
     position: int
 
 
@@ -81,9 +90,12 @@ def generate_tool_call(tile: Tile, context: str = "", date: bool = False) -> str
     return tool_call
 
 
-def perform_tool_call(tool_calls) -> str:
+def perform_tool_call(tool_call) -> str:
     # TODO: Add api calls here
-    return ""
+    function = TOOLS[tool_call.type]
+    inputs_dict = dict(item.split("=") for item in tool_call.inputs)
+    response = function(**inputs_dict)
+    return response
 
 
 def save_canvas(canvas_data):

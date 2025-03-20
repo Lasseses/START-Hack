@@ -1,6 +1,6 @@
 class Tool {
   type ToolType @description("The type of tool to be used.")
-  inputs string[] @description("A list of key-value pairs that define the input for the tool. <arg-name>: <arg-value>")
+  inputs string[] @description("A list of key-value pairs that define the input for the tool. <arg-name>=<arg-value>")
 }
 
 // alternative approach to consider let llm choose tool per tile and then in a next llm call set input per tool. for now trying to do this in one go 
@@ -27,18 +27,7 @@ enum ToolType {
     define the logical condition for filtering. For example:
     
         '{"ebitda": "is positive", "employees": "more than 10000"}'
-    
-    The function sends an HTTP POST request to a remote API endpoint and retrieves a table
-    of search results in JSON format. The returned table includes the following columns:
-    
-        - Name
-        - SIX_ID
-        - ISIN
-        - Valornumber (listing)
-        - Bourse Code
-        - Currency
-        - Fundamentals annual 1 - EBITDA (millions)
-        - Fundamentals annual 1 - Employees (millions)
+  
     
     Args:
         query (str): A JSON-formatted string specifying the search criteria. Possible search criteria are: 
@@ -77,6 +66,23 @@ enum ToolType {
     
     Returns:
         dict: A JSON dictionary representing the search results table."#)
+
+  FETCH_ASSET_ALLOCATION @description( #"Retrieves the asset allocation for a specified customer from a JSON file.
+
+    This function reads a JSON file containing multiple customers' financial portfolios 
+    and extracts the asset allocation for the given customer. The returned data is 
+    structured as a list of dictionaries, where each dictionary represents an asset with 
+    its corresponding allocation percentage.
+
+    Args:
+        customer_name (str): The name of the customer whose asset allocation is to be retrieved.
+
+    Returns:
+        list[dict]: A list of dictionaries, each containing:
+            - "asset" (str): The name of the asset.
+            - "allocation" (float): The percentage allocation of the asset.
+  "#)        
+  
 }
 
 
