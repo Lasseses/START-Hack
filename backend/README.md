@@ -11,7 +11,8 @@ For example: '{"ebitda": "is positive", "employees": "more than 10000"}'.
 
 ```
 cd backend
+poetry config virtualenvs.in-project true
 poetry install
 poetry env activate
-# copy past source ...venv/bin/activate command
+# copy paste source ...venv/bin/activate command
 ```
