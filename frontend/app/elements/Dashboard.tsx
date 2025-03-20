@@ -5,7 +5,14 @@ import dynamic from "next/dynamic";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
-import { Tile, CandlestickData, PieData, BarData, AreaData, TableData } from "@/types/dashboard";
+import {
+  Tile,
+  CandlestickData,
+  PieData,
+  BarData,
+  AreaData,
+  TableData,
+} from "@/types/dashboard";
 
 // Typisiere die Props für jede Komponente
 interface CandleStickChartProps {
@@ -20,12 +27,21 @@ interface AreaChartProps {
 
 interface PieChartProps {
   pieSeries: PieData;
-  metadata?: any;
+  metadata?: {
+    title?: string;
+    description?: string;
+    showLegend?: boolean;
+    showLabels?: boolean;
+    showTotal?: boolean;
+    donut?: boolean;
+  };
 }
 
 interface BarChartProps {
-  barSeries: BarData[];
-  metadata?: any;
+  barSeries: {
+    name: string;
+    data: number[];
+  }[];
 }
 
 interface DataTableProps {
@@ -34,32 +50,46 @@ interface DataTableProps {
 }
 
 // Dynamischer Import der Komponenten
-const CandleStickChart = dynamic<CandleStickChartProps>(() => import("@/components/candlestick"), { 
+const CandleStickChart = dynamic<CandleStickChartProps>(
+  () => import("@/components/candlestick"),
+  {
+    ssr: false,
+    loading: () => <Skeleton className="w-full h-[300px] rounded-lg" />,
+  }
+);
+const AreaChart = dynamic<AreaChartProps>(
+  () => import("@/components/areachart"),
+  {
+    ssr: false,
+    loading: () => <Skeleton className="w-full h-[300px] rounded-lg" />,
+  }
+);
+const PieChart = dynamic<PieChartProps>(() => import("@/components/piechart"), {
   ssr: false,
-  loading: () => <Skeleton className="w-full h-[300px] rounded-lg" />
+  loading: () => <Skeleton className="w-full h-[300px] rounded-lg" />,
 });
-const AreaChart = dynamic<AreaChartProps>(() => import("@/components/areachart"), { 
+const BarChart = dynamic<BarChartProps>(() => import("@/components/barchart"), {
   ssr: false,
-  loading: () => <Skeleton className="w-full h-[300px] rounded-lg" />
+  loading: () => <Skeleton className="w-full h-[300px] rounded-lg" />,
 });
-const PieChart = dynamic<PieChartProps>(() => import("@/components/piechart"), { 
-  ssr: false,
-  loading: () => <Skeleton className="w-full h-[300px] rounded-lg" />
-});
-const BarChart = dynamic<BarChartProps>(() => import("@/components/barchart"), { 
-  ssr: false,
-  loading: () => <Skeleton className="w-full h-[300px] rounded-lg" />
-});
-const DataTable = dynamic<DataTableProps>(() => import("@/components/datatable"), { 
-  ssr: false,
-  loading: () => <Skeleton className="w-full h-[300px] rounded-lg" />
-});
+const DataTable = dynamic<DataTableProps>(
+  () => import("@/components/datatable"),
+  {
+    ssr: false,
+    loading: () => <Skeleton className="w-full h-[300px] rounded-lg" />,
+  }
+);
 
 // Komponente zur Auswahl des richtigen Tile-Typs
 const TileRenderer: React.FC<{ tile: Tile }> = ({ tile }) => {
   switch (tile.type) {
     case "candlestick":
-      return <CandleStickChart candlestickData={tile.data} metadata={tile.metadata} />;
+      return (
+        <CandleStickChart
+          candlestickData={tile.data}
+          metadata={tile.metadata}
+        />
+      );
     case "pie":
       return <PieChart pieSeries={tile.data} metadata={tile.metadata} />;
     case "bar":
@@ -85,7 +115,7 @@ export default function Dashboard() {
       <div className="min-w-[80vw] p-4 max-h-[85vh] overflow-y-auto">
         <Alert variant="destructive" className="mb-6">
           <AlertCircle className="h-4 w-4" />
-          <AlertTitle>Fehler</AlertTitle>
+          <AlertTitle>Error</AlertTitle>
           <AlertDescription>{error}</AlertDescription>
         </Alert>
       </div>
@@ -106,7 +136,10 @@ export default function Dashboard() {
         // Dynamisches Grid-Layout basierend auf den Tile-Größen
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {tiles.map((tile, index) => (
-            <div key={index} className={tile.metadata?.fullWidth ? "col-span-full" : ""}>
+            <div
+              key={index}
+              className={tile.metadata?.fullWidth ? "col-span-full" : ""}
+            >
               <TileRenderer tile={tile} />
             </div>
           ))}
@@ -114,7 +147,9 @@ export default function Dashboard() {
       ) : (
         // Anfangszustand oder leeres Dashboard
         <div className="text-center py-20">
-          <h2 className="text-xl font-semibold mb-2">Willkommen zu deinem Dashboard</h2>
+          <h2 className="text-xl font-semibold mb-2">
+            Willkommen zu deinem Dashboard
+          </h2>
           <p className="text-zinc-400">
             Stelle eine Frage, um Visualisierungen deiner Daten zu erhalten.
           </p>
