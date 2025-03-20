@@ -11,12 +11,12 @@ class Tile {
 }
 
 enum DiagramType {
-  LINE @description("Line chart diagram")
-  BAR @description("Bar chart diagram")
-  PIE @description("Pie chart diagram")
-  CANDLE @description("Candle chart diagram")
-  KPI @description("A simple KPI number")
-  TABLE @description("A table with data")
+  LINE @description("Line chart diagram time")
+  // BAR @description("Bar chart diagram")
+  PIE @description("Pie chart diagram asset allocaiton")
+  CANDLE @description("Candle chart diagram time")
+  // KPI @description("A simple KPI number")
+  TABLE @description("A table with data criterion")
 }
 // add more details how complex these charts can be 
 // are certain tools connected to certain diagram types?
