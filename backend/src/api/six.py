@@ -151,17 +151,6 @@ def fetch_asset_allocation(customer_name):
     with open("res/asset_allocation.json", "r") as file:
         data = json.load(file)
     
-    customer_data = [customer_data for customer_data in data if customer_data["name"] == customer_name][0]
+    customer_data = data[customer_name]
 
-    portfolio = customer.get("portfolio", [])
-    labels = [item.get("asset") for item in portfolio]
-    data = [item.get("allocation") for item in portfolio]
-    
-    # Optionally, validate if the allocations sum to 100%
-    total_allocation = sum(data)
-    if total_allocation != 100:
-        print(f"Warning: Total allocation for customer {customer.get('customer_id')} is {total_allocation}, expected 100.")
-
-    return {"labels": labels, "data": data}
-
-
+    return customer_data

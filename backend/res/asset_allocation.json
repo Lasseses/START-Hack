@@ -1,138 +1,97 @@
 {
-  "customers": [
-    {
-      "customer_id": "CUST001",
-      "name": "John Doe",
-      "portfolio": [
-        { "asset": "Domestic Stocks", "allocation": 30 },
-        { "asset": "International Stocks", "allocation": 20 },
-        { "asset": "Corporate Bonds", "allocation": 15 },
-        { "asset": "Government Bonds", "allocation": 10 },
-        { "asset": "Real Estate", "allocation": 10 },
-        { "asset": "Cash & Equivalents", "allocation": 10 },
-        { "asset": "Crypto", "allocation": 5 }
-      ]
-    },
-    {
-      "customer_id": "CUST002",
-      "name": "Jane Smith",
-      "portfolio": [
-        { "asset": "Domestic Stocks", "allocation": 25 },
-        { "asset": "International Stocks", "allocation": 15 },
-        { "asset": "Corporate Bonds", "allocation": 20 },
-        { "asset": "Government Bonds", "allocation": 10 },
-        { "asset": "Real Estate", "allocation": 10 },
-        { "asset": "Cash & Equivalents", "allocation": 10 },
-        { "asset": "Mutual Funds", "allocation": 10 }
-      ]
-    },
-    {
-      "customer_id": "CUST003",
-      "name": "Bob Johnson",
-      "portfolio": [
-        { "asset": "Domestic Stocks", "allocation": 40 },
-        { "asset": "International Stocks", "allocation": 10 },
-        { "asset": "ETFs", "allocation": 15 },
-        { "asset": "Corporate Bonds", "allocation": 10 },
-        { "asset": "Government Bonds", "allocation": 5 },
-        { "asset": "Real Estate", "allocation": 10 },
-        { "asset": "Crypto", "allocation": 5 },
-        { "asset": "Cash & Equivalents", "allocation": 5 }
-      ]
-    },
-    {
-      "customer_id": "CUST004",
-      "name": "Alice Williams",
-      "portfolio": [
-        { "asset": "Domestic Stocks", "allocation": 20 },
-        { "asset": "International Stocks", "allocation": 20 },
-        { "asset": "Corporate Bonds", "allocation": 20 },
-        { "asset": "Government Bonds", "allocation": 10 },
-        { "asset": "Real Estate", "allocation": 10 },
-        { "asset": "ETFs", "allocation": 10 },
-        { "asset": "Commodities", "allocation": 5 },
-        { "asset": "Cash & Equivalents", "allocation": 5 }
-      ]
-    },
-    {
-      "customer_id": "CUST005",
-      "name": "Michael Brown",
-      "portfolio": [
-        { "asset": "Domestic Stocks", "allocation": 35 },
-        { "asset": "International Stocks", "allocation": 15 },
-        { "asset": "Mutual Funds", "allocation": 20 },
-        { "asset": "Corporate Bonds", "allocation": 10 },
-        { "asset": "Government Bonds", "allocation": 5 },
-        { "asset": "Real Estate", "allocation": 10 },
-        { "asset": "Alternative Investments", "allocation": 5 }
-      ]
-    },
-    {
-      "customer_id": "CUST006",
-      "name": "Emily Davis",
-      "portfolio": [
-        { "asset": "Domestic Stocks", "allocation": 20 },
-        { "asset": "International Stocks", "allocation": 20 },
-        { "asset": "ETFs", "allocation": 15 },
-        { "asset": "Corporate Bonds", "allocation": 15 },
-        { "asset": "Government Bonds", "allocation": 10 },
-        { "asset": "Real Estate", "allocation": 10 },
-        { "asset": "Crypto", "allocation": 5 },
-        { "asset": "Commodities", "allocation": 5 }
-      ]
-    },
-    {
-      "customer_id": "CUST007",
-      "name": "David Miller",
-      "portfolio": [
-        { "asset": "Domestic Stocks", "allocation": 45 },
-        { "asset": "International Stocks", "allocation": 25 },
-        { "asset": "Corporate Bonds", "allocation": 10 },
-        { "asset": "Government Bonds", "allocation": 5 },
-        { "asset": "Real Estate", "allocation": 5 },
-        { "asset": "ETFs", "allocation": 5 },
-        { "asset": "Cash & Equivalents", "allocation": 5 }
-      ]
-    },
-    {
-      "customer_id": "CUST008",
-      "name": "Sarah Wilson",
-      "portfolio": [
-        { "asset": "Domestic Stocks", "allocation": 30 },
-        { "asset": "International Stocks", "allocation": 20 },
-        { "asset": "Corporate Bonds", "allocation": 10 },
-        { "asset": "Government Bonds", "allocation": 10 },
-        { "asset": "Mutual Funds", "allocation": 10 },
-        { "asset": "Real Estate", "allocation": 10 },
-        { "asset": "Crypto", "allocation": 5 },
-        { "asset": "Cash & Equivalents", "allocation": 5 }
-      ]
-    },
-    {
-      "customer_id": "CUST009",
-      "name": "Daniel Garcia",
-      "portfolio": [
-        { "asset": "Domestic Stocks", "allocation": 40 },
-        { "asset": "International Stocks", "allocation": 15 },
-        { "asset": "ETFs", "allocation": 15 },
-        { "asset": "Corporate Bonds", "allocation": 10 },
-        { "asset": "Government Bonds", "allocation": 5 },
-        { "asset": "Real Estate", "allocation": 10 },
-        { "asset": "Commodities", "allocation": 5 }
-      ]
-    },
-    {
-      "customer_id": "CUST010",
-      "name": "Laura Martinez",
-      "portfolio": [
-        { "asset": "Domestic Stocks", "allocation": 25 },
-        { "asset": "International Stocks", "allocation": 25 },
-        { "asset": "Mutual Funds", "allocation": 15 },
-        { "asset": "ETFs", "allocation": 15 },
-        { "asset": "Corporate Bonds", "allocation": 10 },
-        { "asset": "Government Bonds", "allocation": 5 },
-        { "asset": "Cash & Equivalents", "allocation": 5 }
-      ]
-    }
-  ]
-}
+    "John Doe": [
+      { "asset": "Domestic Stocks", "allocation": 30 },
+      { "asset": "International Stocks", "allocation": 20 },
+      { "asset": "Corporate Bonds", "allocation": 15 },
+      { "asset": "Government Bonds", "allocation": 10 },
+      { "asset": "Real Estate", "allocation": 10 },
+      { "asset": "Cash & Equivalents", "allocation": 10 },
+      { "asset": "Crypto", "allocation": 5 }
+    ],
+    "Jane Smith": [
+      { "asset": "Domestic Stocks", "allocation": 25 },
+      { "asset": "International Stocks", "allocation": 15 },
+      { "asset": "Corporate Bonds", "allocation": 20 },
+      { "asset": "Government Bonds", "allocation": 10 },
+      { "asset": "Real Estate", "allocation": 10 },
+      { "asset": "Cash & Equivalents", "allocation": 10 },
+      { "asset": "Mutual Funds", "allocation": 10 }
+    ],
+    "Bob Johnson": [
+      { "asset": "Domestic Stocks", "allocation": 40 },
+      { "asset": "International Stocks", "allocation": 10 },
+      { "asset": "ETFs", "allocation": 15 },
+      { "asset": "Corporate Bonds", "allocation": 10 },
+      { "asset": "Government Bonds", "allocation": 5 },
+      { "asset": "Real Estate", "allocation": 10 },
+      { "asset": "Crypto", "allocation": 5 },
+      { "asset": "Cash & Equivalents", "allocation": 5 }
+    ],
+    "Alice Williams": [
+      { "asset": "Domestic Stocks", "allocation": 20 },
+      { "asset": "International Stocks", "allocation": 20 },
+      { "asset": "Corporate Bonds", "allocation": 20 },
+      { "asset": "Government Bonds", "allocation": 10 },
+      { "asset": "Real Estate", "allocation": 10 },
+      { "asset": "ETFs", "allocation": 10 },
+      { "asset": "Commodities", "allocation": 5 },
+      { "asset": "Cash & Equivalents", "allocation": 5 }
+    ],
+    "Michael Brown": [
+      { "asset": "Domestic Stocks", "allocation": 35 },
+      { "asset": "International Stocks", "allocation": 15 },
+      { "asset": "Mutual Funds", "allocation": 20 },
+      { "asset": "Corporate Bonds", "allocation": 10 },
+      { "asset": "Government Bonds", "allocation": 5 },
+      { "asset": "Real Estate", "allocation": 10 },
+      { "asset": "Alternative Investments", "allocation": 5 }
+    ],
+    "Emily Davis": [
+      { "asset": "Domestic Stocks", "allocation": 20 },
+      { "asset": "International Stocks", "allocation": 20 },
+      { "asset": "ETFs", "allocation": 15 },
+      { "asset": "Corporate Bonds", "allocation": 15 },
+      { "asset": "Government Bonds", "allocation": 10 },
+      { "asset": "Real Estate", "allocation": 10 },
+      { "asset": "Crypto", "allocation": 5 },
+      { "asset": "Commodities", "allocation": 5 }
+    ],
+    "David Miller": [
+      { "asset": "Domestic Stocks", "allocation": 45 },
+      { "asset": "International Stocks", "allocation": 25 },
+      { "asset": "Corporate Bonds", "allocation": 10 },
+      { "asset": "Government Bonds", "allocation": 5 },
+      { "asset": "Real Estate", "allocation": 5 },
+      { "asset": "ETFs", "allocation": 5 },
+      { "asset": "Cash & Equivalents", "allocation": 5 }
+    ],
+    "Sarah Wilson": [
+      { "asset": "Domestic Stocks", "allocation": 30 },
+      { "asset": "International Stocks", "allocation": 20 },
+      { "asset": "Corporate Bonds", "allocation": 10 },
+      { "asset": "Government Bonds", "allocation": 10 },
+      { "asset": "Mutual Funds", "allocation": 10 },
+      { "asset": "Real Estate", "allocation": 10 },
+      { "asset": "Crypto", "allocation": 5 },
+      { "asset": "Cash & Equivalents", "allocation": 5 }
+    ],
+    "Daniel Garcia": [
+      { "asset": "Domestic Stocks", "allocation": 40 },
+      { "asset": "International Stocks", "allocation": 15 },
+      { "asset": "ETFs", "allocation": 15 },
+      { "asset": "Corporate Bonds", "allocation": 10 },
+      { "asset": "Government Bonds", "allocation": 5 },
+      { "asset": "Real Estate", "allocation": 10 },
+      { "asset": "Commodities", "allocation": 5 }
+    ],
+    "Laura Martinez": [
+      { "asset": "Domestic Stocks", "allocation": 25 },
+      { "asset": "International Stocks", "allocation": 25 },
+      { "asset": "Mutual Funds", "allocation": 15 },
+      { "asset": "ETFs", "allocation": 15 },
+      { "asset": "Corporate Bonds", "allocation": 10 },
+      { "asset": "Government Bonds", "allocation": 5 },
+      { "asset": "Cash & Equivalents", "allocation": 5 }
+    ]
+  }
+  
