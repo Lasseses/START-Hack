@@ -100,11 +100,11 @@ class BamlAsyncClient:
       return self.__llm_stream_parser
 
     
-    async def ExtractResume(
+    async def GenerateCanvas(
         self,
-        resume: str,
+        user_input: str,context: str,
         baml_options: BamlCallOptions = {},
-    ) -> types.Resume:
+    ) -> types.Canvas:
       options: BamlCallOptions = {**self.__baml_options, **(baml_options or {})}
 
       __tb__ = options.get("tb", None)
@@ -116,16 +116,43 @@ class BamlAsyncClient:
       collector = options.get("collector", None)
       collectors = collector if isinstance(collector, list) else [collector] if collector is not None else []
       raw = await self.__runtime.call_function(
-        "ExtractResume",
+        "GenerateCanvas",
         {
-          "resume": resume,
+          "user_input": user_input,"context": context,
         },
         self.__ctx_manager.get(),
         tb,
         __cr__,
         collectors,
       )
-      return cast(types.Resume, raw.cast_to(types, types, partial_types, False))
+      return cast(types.Canvas, raw.cast_to(types, types, partial_types, False))
+    
+    async def GenerateToolCalls(
+        self,
+        title: str,type: str,description: str,context: str,date: str,
+        baml_options: BamlCallOptions = {},
+    ) -> types.Tool:
+      options: BamlCallOptions = {**self.__baml_options, **(baml_options or {})}
+
+      __tb__ = options.get("tb", None)
+      if __tb__ is not None:
+        tb = __tb__._tb # type: ignore (we know how to use this private attribute)
+      else:
+        tb = None
+      __cr__ = options.get("client_registry", None)
+      collector = options.get("collector", None)
+      collectors = collector if isinstance(collector, list) else [collector] if collector is not None else []
+      raw = await self.__runtime.call_function(
+        "GenerateToolCalls",
+        {
+          "title": title,"type": type,"description": description,"context": context,"date": date,
+        },
+        self.__ctx_manager.get(),
+        tb,
+        __cr__,
+        collectors,
+      )
+      return cast(types.Tool, raw.cast_to(types, types, partial_types, False))
     
 
 
@@ -139,11 +166,11 @@ class BamlStreamClient:
       self.__baml_options = baml_options or {}
 
     
-    def ExtractResume(
+    def GenerateCanvas(
         self,
-        resume: str,
+        user_input: str,context: str,
         baml_options: BamlCallOptions = {},
-    ) -> baml_py.BamlStream[partial_types.Resume, types.Resume]:
+    ) -> baml_py.BamlStream[partial_types.Canvas, types.Canvas]:
       options: BamlCallOptions = {**self.__baml_options, **(baml_options or {})}
       __tb__ = options.get("tb", None)
       if __tb__ is not None:
@@ -154,9 +181,10 @@ class BamlStreamClient:
       collector = options.get("collector", None)
       collectors = collector if isinstance(collector, list) else [collector] if collector is not None else []
       raw = self.__runtime.stream_function(
-        "ExtractResume",
+        "GenerateCanvas",
         {
-          "resume": resume,
+          "user_input": user_input,
+          "context": context,
         },
         None,
         self.__ctx_manager.get(),
@@ -165,10 +193,47 @@ class BamlStreamClient:
         collectors,
       )
 
-      return baml_py.BamlStream[partial_types.Resume, types.Resume](
+      return baml_py.BamlStream[partial_types.Canvas, types.Canvas](
         raw,
-        lambda x: cast(partial_types.Resume, x.cast_to(types, types, partial_types, True)),
-        lambda x: cast(types.Resume, x.cast_to(types, types, partial_types, False)),
+        lambda x: cast(partial_types.Canvas, x.cast_to(types, types, partial_types, True)),
+        lambda x: cast(types.Canvas, x.cast_to(types, types, partial_types, False)),
+        self.__ctx_manager.get(),
+      )
+    
+    def GenerateToolCalls(
+        self,
+        title: str,type: str,description: str,context: str,date: str,
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.BamlStream[partial_types.Tool, types.Tool]:
+      options: BamlCallOptions = {**self.__baml_options, **(baml_options or {})}
+      __tb__ = options.get("tb", None)
+      if __tb__ is not None:
+        tb = __tb__._tb # type: ignore (we know how to use this private attribute)
+      else:
+        tb = None
+      __cr__ = options.get("client_registry", None)
+      collector = options.get("collector", None)
+      collectors = collector if isinstance(collector, list) else [collector] if collector is not None else []
+      raw = self.__runtime.stream_function(
+        "GenerateToolCalls",
+        {
+          "title": title,
+          "type": type,
+          "description": description,
+          "context": context,
+          "date": date,
+        },
+        None,
+        self.__ctx_manager.get(),
+        tb,
+        __cr__,
+        collectors,
+      )
+
+      return baml_py.BamlStream[partial_types.Tool, types.Tool](
+        raw,
+        lambda x: cast(partial_types.Tool, x.cast_to(types, types, partial_types, True)),
+        lambda x: cast(types.Tool, x.cast_to(types, types, partial_types, False)),
         self.__ctx_manager.get(),
       )
     

@@ -39,6 +39,7 @@ client<llm> CustomGemini2Flash {
   provider google-ai
   options {
     model "gemini-2.0-flash"
+    api_key env.GOOGLE_AI_API_KEY
   }
 }
 

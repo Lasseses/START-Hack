@@ -37,11 +37,11 @@ class LlmResponseParser:
       self.__ctx_manager = ctx_manager
 
     
-    def ExtractResume(
+    def GenerateCanvas(
         self,
         llm_response: str,
         baml_options: BamlCallOptions = {},
-    ) -> types.Resume:
+    ) -> types.Canvas:
       __tb__ = baml_options.get("tb", None)
       if __tb__ is not None:
         tb = __tb__._tb # type: ignore (we know how to use this private attribute)
@@ -50,7 +50,7 @@ class LlmResponseParser:
       __cr__ = baml_options.get("client_registry", None)
 
       parsed = self.__runtime.parse_llm_response(
-        "ExtractResume",
+        "GenerateCanvas",
         llm_response,
         types,
         types,
@@ -61,7 +61,33 @@ class LlmResponseParser:
         __cr__,
       )
 
-      return cast(types.Resume, parsed)
+      return cast(types.Canvas, parsed)
+    
+    def GenerateToolCalls(
+        self,
+        llm_response: str,
+        baml_options: BamlCallOptions = {},
+    ) -> types.Tool:
+      __tb__ = baml_options.get("tb", None)
+      if __tb__ is not None:
+        tb = __tb__._tb # type: ignore (we know how to use this private attribute)
+      else:
+        tb = None
+      __cr__ = baml_options.get("client_registry", None)
+
+      parsed = self.__runtime.parse_llm_response(
+        "GenerateToolCalls",
+        llm_response,
+        types,
+        types,
+        partial_types,
+        False,
+        self.__ctx_manager.get(),
+        tb,
+        __cr__,
+      )
+
+      return cast(types.Tool, parsed)
     
 
 
@@ -74,11 +100,11 @@ class LlmStreamParser:
       self.__ctx_manager = ctx_manager
 
     
-    def ExtractResume(
+    def GenerateCanvas(
         self,
         llm_response: str,
         baml_options: BamlCallOptions = {},
-    ) -> partial_types.Resume:
+    ) -> partial_types.Canvas:
       __tb__ = baml_options.get("tb", None)
       if __tb__ is not None:
         tb = __tb__._tb # type: ignore (we know how to use this private attribute)
@@ -87,7 +113,7 @@ class LlmStreamParser:
       __cr__ = baml_options.get("client_registry", None)
 
       parsed = self.__runtime.parse_llm_response(
-        "ExtractResume",
+        "GenerateCanvas",
         llm_response,
         types,
         types,
@@ -98,7 +124,33 @@ class LlmStreamParser:
         __cr__,
       )
 
-      return cast(partial_types.Resume, parsed)
+      return cast(partial_types.Canvas, parsed)
+    
+    def GenerateToolCalls(
+        self,
+        llm_response: str,
+        baml_options: BamlCallOptions = {},
+    ) -> partial_types.Tool:
+      __tb__ = baml_options.get("tb", None)
+      if __tb__ is not None:
+        tb = __tb__._tb # type: ignore (we know how to use this private attribute)
+      else:
+        tb = None
+      __cr__ = baml_options.get("client_registry", None)
+
+      parsed = self.__runtime.parse_llm_response(
+        "GenerateToolCalls",
+        llm_response,
+        types,
+        types,
+        partial_types,
+        True,
+        self.__ctx_manager.get(),
+        tb,
+        __cr__,
+      )
+
+      return cast(partial_types.Tool, parsed)
     
 
 

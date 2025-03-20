@@ -37,9 +37,9 @@ class AsyncHttpRequest:
       self.__ctx_manager = ctx_manager
 
     
-    async def ExtractResume(
+    async def GenerateCanvas(
         self,
-        resume: str,
+        user_input: str,context: str,
         baml_options: BamlCallOptions = {},
     ) -> baml_py.HTTPRequest:
       __tb__ = baml_options.get("tb", None)
@@ -50,9 +50,37 @@ class AsyncHttpRequest:
       __cr__ = baml_options.get("client_registry", None)
 
       return await self.__runtime.build_request(
-        "ExtractResume",
+        "GenerateCanvas",
         {
-          "resume": resume,
+          "user_input": user_input,
+          "context": context,
+        },
+        self.__ctx_manager.get(),
+        tb,
+        __cr__,
+        False,
+      )
+    
+    async def GenerateToolCalls(
+        self,
+        title: str,type: str,description: str,context: str,date: str,
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.HTTPRequest:
+      __tb__ = baml_options.get("tb", None)
+      if __tb__ is not None:
+        tb = __tb__._tb # type: ignore (we know how to use this private attribute)
+      else:
+        tb = None
+      __cr__ = baml_options.get("client_registry", None)
+
+      return await self.__runtime.build_request(
+        "GenerateToolCalls",
+        {
+          "title": title,
+          "type": type,
+          "description": description,
+          "context": context,
+          "date": date,
         },
         self.__ctx_manager.get(),
         tb,
@@ -71,9 +99,9 @@ class AsyncHttpStreamRequest:
       self.__ctx_manager = ctx_manager
 
     
-    async def ExtractResume(
+    async def GenerateCanvas(
         self,
-        resume: str,
+        user_input: str,context: str,
         baml_options: BamlCallOptions = {},
     ) -> baml_py.HTTPRequest:
       __tb__ = baml_options.get("tb", None)
@@ -84,9 +112,37 @@ class AsyncHttpStreamRequest:
       __cr__ = baml_options.get("client_registry", None)
 
       return await self.__runtime.build_request(
-        "ExtractResume",
+        "GenerateCanvas",
         {
-          "resume": resume,
+          "user_input": user_input,
+          "context": context,
+        },
+        self.__ctx_manager.get(),
+        tb,
+        __cr__,
+        True,
+      )
+    
+    async def GenerateToolCalls(
+        self,
+        title: str,type: str,description: str,context: str,date: str,
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.HTTPRequest:
+      __tb__ = baml_options.get("tb", None)
+      if __tb__ is not None:
+        tb = __tb__._tb # type: ignore (we know how to use this private attribute)
+      else:
+        tb = None
+      __cr__ = baml_options.get("client_registry", None)
+
+      return await self.__runtime.build_request(
+        "GenerateToolCalls",
+        {
+          "title": title,
+          "type": type,
+          "description": description,
+          "context": context,
+          "date": date,
         },
         self.__ctx_manager.get(),
         tb,

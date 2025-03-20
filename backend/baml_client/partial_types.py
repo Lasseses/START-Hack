@@ -35,8 +35,14 @@ class StreamState(BaseModel, Generic[T]):
     state: Literal["Pending", "Incomplete", "Complete"]
 
 
-class Resume(BaseModel):
-    name: Optional[str] = None
-    email: Optional[str] = None
-    experience: List[str]
-    skills: List[str]
+class Canvas(BaseModel):
+    tiles: List["Tile"]
+
+class Tile(BaseModel):
+    title: Optional[str] = None
+    type: Optional[types.DiagramType] = None
+    content: Optional[str] = None
+
+class Tool(BaseModel):
+    type: Optional[types.ToolType] = None
+    inputs: List[str]

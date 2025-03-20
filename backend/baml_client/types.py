@@ -40,8 +40,28 @@ def all_succeeded(checks: Dict[CheckName, Check]) -> bool:
 
 
 
-class Resume(BaseModel):
-    name: str
-    email: str
-    experience: List[str]
-    skills: List[str]
+class DiagramType(str, Enum):
+    
+    LINE = "LINE"
+    BAR = "BAR"
+    PIE = "PIE"
+    CANDLE = "CANDLE"
+    KPI = "KPI"
+    TABLE = "TABLE"
+
+class ToolType(str, Enum):
+    
+    OHLCV = "OHLCV"
+    SEARCHWITHCRITERIA = "SEARCHWITHCRITERIA"
+
+class Canvas(BaseModel):
+    tiles: List["Tile"]
+
+class Tile(BaseModel):
+    title: str
+    type: "DiagramType"
+    content: str
+
+class Tool(BaseModel):
+    type: "ToolType"
+    inputs: List[str]
