@@ -20,7 +20,7 @@ export default function Topbar() {
         </nav>
       </div>
       <div className="text-red-500">
-        <span className="font-bold">iD</span>
+        <span className="font-bold">iQ</span>
       </div>
     </div>
   </header>

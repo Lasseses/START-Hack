@@ -24,9 +24,9 @@ export interface CandlestickData {
   volume?: number;
 }
 
-export interface PieData {
-  // Array von numerischen Werten
-  [index: number]: number;
+interface PieData {
+  series: number[];
+  labels: string[];
 }
 
 export interface BarData {

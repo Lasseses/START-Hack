@@ -8,36 +8,48 @@ import type { ApexOptions } from "apexcharts"
 // Dynamischer Import von ReactApexChart, damit dieser nur im Browser geladen wird.
 const ReactApexChart = dynamic(() => import("react-apexcharts"), { ssr: false })
 
+interface PieData {
+  series: number[];
+  labels: string[];
+  colors?: string[];
+}
+
 interface PieChartProps {
-  pieSeries: number[]
-  labels?: string[]
-  title?: string
-  description?: string
-  colors?: string[]
-  showLegend?: boolean
-  showLabels?: boolean
-  showTotal?: boolean
-  donut?: boolean
+  pieSeries: PieData;
+  metadata?: {
+    title?: string;
+    description?: string;
+    showLegend?: boolean;
+    showLabels?: boolean;
+    showTotal?: boolean;
+    donut?: boolean;
+  };
 }
 
 export default function PieChart({
   pieSeries,
-  labels = ["Kategorie A", "Kategorie B", "Kategorie C", "Kategorie D"],
-  title = "Verteilung",
-  description = "Verteilung nach Kategorie",
-  colors = ["#3b82f6", "#10b981", "#f59e0b", "#6366f1", "#ec4899", "#8b5cf6"],
-  showLegend = true,
-  showLabels = true,
-  showTotal = true,
-  donut = false,
+  metadata
 }: PieChartProps) {
   const [selectedSlice, setSelectedSlice] = useState<number | null>(null)
 
+  // Extrahiere die Werte aus dem PieData-Objekt
+  const { series, labels, colors = ["#3b82f6", "#10b981", "#f59e0b", "#6366f1", "#ec4899", "#8b5cf6"] } = pieSeries;
+  
+  // Extrahiere Metadaten mit Standardwerten
+  const {
+    title = "Verteilung",
+    description = "Verteilung nach Kategorie",
+    showLegend = true,
+    showLabels = true,
+    showTotal = true,
+    donut = false
+  } = metadata || {};
+
   // Berechne die Gesamtsumme
-  const total = pieSeries.reduce((sum, value) => sum + value, 0)
+  const total = series.reduce((sum, value) => sum + value, 0)
 
   // Berechne Prozentsätze für jede Kategorie
-  const percentages = pieSeries.map((value) => ((value / total) * 100).toFixed(1))
+  const percentages = series.map((value) => ((value / total) * 100).toFixed(1))
 
   // Formatiere die Gesamtsumme
   const formatTotal = (value: number) => {
@@ -48,7 +60,7 @@ export default function PieChart({
 
   // Erstelle angepasste Labels mit Werten und Prozentsätzen
   const formattedLabels = labels.map((label, index) => {
-    return `${label}: ${pieSeries[index].toLocaleString("de-DE")} (${percentages[index]}%)`
+    return `${label}: ${series[index].toLocaleString("de-DE")} (${percentages[index]}%)`
   })
 
   const chartOptions: ApexOptions = {
@@ -213,7 +225,7 @@ export default function PieChart({
         <div className="h-[250px] flex items-center justify-center">
           <ReactApexChart
             options={chartOptions}
-            series={pieSeries}
+            series={series}
             type={donut ? "donut" : "pie"}
             height="100%"
             width="100%"
@@ -223,4 +235,3 @@ export default function PieChart({
     </Card>
   )
 }
-

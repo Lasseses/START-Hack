@@ -55,8 +55,16 @@ export default function DataTable({ tableData }: DataTableProps) {
     }
   })
 
-  const formatPrice = (price: number) => {
-    return price.toFixed(2)
+  const formatPrice = (price: number | string | undefined) => {
+    if (price === undefined) return "-";
+    
+    // If price is a string, convert it to a number
+    const numericPrice = typeof price === 'string' ? parseFloat(price) : price;
+    
+    // Check if the conversion resulted in a valid number
+    if (isNaN(numericPrice)) return "-";
+    
+    return numericPrice.toFixed(2);
   }
 
   const formatVolume = (volume: number) => {
@@ -65,7 +73,9 @@ export default function DataTable({ tableData }: DataTableProps) {
     } else if (volume >= 1000) {
       return (volume / 1000).toFixed(2) + "K"
     }
-    return volume.toLocaleString()
+    if(volume != undefined){
+        return volume.toLocaleString()
+    }
   }
 
   const getSortIcon = (field: SortField) => {
