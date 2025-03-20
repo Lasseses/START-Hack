@@ -138,7 +138,13 @@ export default function Dashboard() {
           {tiles.map((tile, index) => (
             <div
               key={index}
-              className={tile.metadata?.fullWidth ? "col-span-full" : ""}
+              className={`${
+                tile.metadata?.fullWidth
+                  ? "col-span-full"
+                  : tile.type === "table"
+                  ? "col-span-2"
+                  : ""
+              }`}
             >
               <TileRenderer tile={tile} />
             </div>

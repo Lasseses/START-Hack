@@ -40,5 +40,10 @@ export interface AreaData {
 }
 
 export interface TableData {
-  [key: string]: string | number; // Generische Tabellendaten
+  date: string;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  volume: number;
 }

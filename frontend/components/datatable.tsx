@@ -1,28 +1,36 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { cn } from "@/lib/utils"
+import { TableData } from "@/types/dashboard"
 
 interface DataTableProps {
-  tableData: {
-    date: string
-    open: number
-    high: number
-    low: number
-    close: number
-    volume: number
-  }[]
+  tableData: TableData[]
+  metadata?: {
+    title?: string
+    description?: string
+    fullWidth?: boolean
+  }
 }
 
 type SortField = "date" | "open" | "high" | "low" | "close" | "volume"
 type SortDirection = "asc" | "desc"
 
-export default function DataTable({ tableData }: DataTableProps) {
+export default function DataTable({ tableData = [], metadata }: DataTableProps) {
+  const [data, setData] = useState<any[]>([])
   const [sortField, setSortField] = useState<SortField>("date")
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc")
+
+  useEffect(() => {
+    if (tableData && tableData.length > 0) {
+      setData(tableData)
+    } else {
+      setData([])
+    }
+  }, [tableData])
 
   const handleSort = (field: SortField) => {
     if (field === sortField) {
@@ -33,7 +41,7 @@ export default function DataTable({ tableData }: DataTableProps) {
     }
   }
 
-  const sortedData = [...tableData].sort((a, b) => {
+  const sortedData = [...data].sort((a, b) => {
     if (sortField === "date") {
       return sortDirection === "asc"
         ? new Date(a.date).getTime() - new Date(b.date).getTime()
@@ -56,15 +64,10 @@ export default function DataTable({ tableData }: DataTableProps) {
   })
 
   const formatPrice = (price: number | string | undefined) => {
-    if (price === undefined) return "-";
-    
-    // If price is a string, convert it to a number
-    const numericPrice = typeof price === 'string' ? parseFloat(price) : price;
-    
-    // Check if the conversion resulted in a valid number
-    if (isNaN(numericPrice)) return "-";
-    
-    return numericPrice.toFixed(2);
+    if (price === undefined) return "-"
+    const numericPrice = typeof price === 'string' ? parseFloat(price) : price
+    if (isNaN(numericPrice)) return "-"
+    return numericPrice.toFixed(2)
   }
 
   const formatVolume = (volume: number) => {
@@ -73,9 +76,7 @@ export default function DataTable({ tableData }: DataTableProps) {
     } else if (volume >= 1000) {
       return (volume / 1000).toFixed(2) + "K"
     }
-    if(volume != undefined){
-        return volume.toLocaleString()
-    }
+    return volume?.toLocaleString()
   }
 
   const getSortIcon = (field: SortField) => {
@@ -83,101 +84,73 @@ export default function DataTable({ tableData }: DataTableProps) {
     return sortDirection === "asc" ? <ArrowUp className="ml-1 h-3 w-3" /> : <ArrowDown className="ml-1 h-3 w-3" />
   }
 
+  const title = metadata?.title || "Marktdaten"
+  const description = metadata?.description || "Historische Aktienkursinformationen"
+
   return (
     <Card className="border-slate-200 shadow-md">
       <CardHeader className="bg-slate-50 border-b border-slate-200">
-        <CardTitle className="text-slate-800 text-xl">Market Data</CardTitle>
-        <CardDescription>Historical stock price information</CardDescription>
+        <CardTitle className="text-slate-800 text-xl">{title}</CardTitle>
+        <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent className="p-2">
-        <div className="overflow-x-auto">
-          <Table>
-            <TableHeader >
-              <TableRow className="hover:bg-slate-100">
-                <TableHead className="font-semibold text-slate-700 cursor-pointer" onClick={() => handleSort("date")}>
-                  <div className="flex items-center">Date {getSortIcon("date")}</div>
-                </TableHead>
-                <TableHead
-                  className="font-semibold text-slate-700 cursor-pointer text-right"
-                  onClick={() => handleSort("open")}
-                >
-                  <div className="flex items-center justify-end">Open {getSortIcon("open")}</div>
-                </TableHead>
-                <TableHead
-                  className="font-semibold text-slate-700 cursor-pointer text-right"
-                  onClick={() => handleSort("high")}
-                >
-                  <div className="flex items-center justify-end">High {getSortIcon("high")}</div>
-                </TableHead>
-                <TableHead
-                  className="font-semibold text-slate-700 cursor-pointer text-right"
-                  onClick={() => handleSort("low")}
-                >
-                  <div className="flex items-center justify-end">Low {getSortIcon("low")}</div>
-                </TableHead>
-                <TableHead
-                  className="font-semibold text-slate-700 cursor-pointer text-right"
-                  onClick={() => handleSort("close")}
-                >
-                  <div className="flex items-center justify-end">Close {getSortIcon("close")}</div>
-                </TableHead>
-                <TableHead
-                  className="font-semibold text-slate-700 cursor-pointer text-right"
-                  onClick={() => handleSort("volume")}
-                >
-                  <div className="flex items-center justify-end">Volume {getSortIcon("volume")}</div>
-                </TableHead>
-                <TableHead className="font-semibold text-slate-700 text-right">Change</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {dataWithChanges.slice(0, 10).map((item, index) => (
-                <TableRow key={index} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                  <TableCell className="font-medium text-slate-700">
-                    {new Date(item.date).toLocaleDateString("de-DE", {
-                      year: "numeric",
-                      month: "2-digit",
-                      day: "2-digit",
-                    })}
-                  </TableCell>
-                  <TableCell className="text-right font-mono text-slate-700">{formatPrice(item.open)}</TableCell>
-                  <TableCell className="text-right font-mono text-slate-700">{formatPrice(item.high)}</TableCell>
-                  <TableCell className="text-right font-mono text-slate-700">{formatPrice(item.low)}</TableCell>
-                  <TableCell className="text-right font-mono text-slate-700">{formatPrice(item.close)}</TableCell>
-                  <TableCell className="text-right font-mono text-slate-700">{formatVolume(item.volume)}</TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex flex-col items-end">
-                      <span
-                        className={cn(
-                          "font-mono",
-                          item.change > 0 ? "text-emerald-600" : item.change < 0 ? "text-red-600" : "text-slate-500",
-                        )}
-                      >
-                        {item.change > 0 ? "+" : ""}
-                        {formatPrice(item.change)}
-                      </span>
-                      <span
-                        className={cn(
-                          "text-xs font-mono",
-                          item.changePercent > 0
-                            ? "text-emerald-600"
-                            : item.changePercent < 0
-                              ? "text-red-600"
-                              : "text-slate-500",
-                        )}
-                      >
-                        {item.changePercent > 0 ? "+" : ""}
-                        {item.changePercent.toFixed(2)}%
-                      </span>
-                    </div>
-                  </TableCell>
+        {data.length === 0 ? (
+          <div className="p-4 text-center text-slate-500">
+            Keine Daten verfügbar
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  {["date", "open", "high", "low", "close", "volume"].map((field) => (
+                    <TableHead
+                      key={field}
+                      onClick={() => handleSort(field as SortField)}
+                      className="cursor-pointer text-right font-semibold text-slate-700"
+                    >
+                      <div className="flex items-center justify-end">
+                        {field.toUpperCase()} {getSortIcon(field as SortField)}
+                      </div>
+                    </TableHead>
+                  ))}
+                  <TableHead className="font-semibold text-slate-700 text-right">Veränderung</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
+              </TableHeader>
+              <TableBody>
+                {dataWithChanges.slice(0, 10).map((item, index) => (
+                  <TableRow key={index} className="hover:bg-slate-50 border-b border-slate-100">
+                    <TableCell>
+                      {new Date(item.date).toLocaleDateString("de-DE")}
+                    </TableCell>
+                    <TableCell className="text-right">{formatPrice(item.open)}</TableCell>
+                    <TableCell className="text-right">{formatPrice(item.high)}</TableCell>
+                    <TableCell className="text-right">{formatPrice(item.low)}</TableCell>
+                    <TableCell className="text-right">{formatPrice(item.close)}</TableCell>
+                    <TableCell className="text-right">{formatVolume(item.volume)}</TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex flex-col items-end">
+                        <span className={cn(
+                          item.change > 0 ? "text-emerald-600" : item.change < 0 ? "text-red-600" : "text-slate-500"
+                        )}>
+                          {item.change > 0 ? "+" : ""}
+                          {formatPrice(item.change)}
+                        </span>
+                        <span className={cn(
+                          item.changePercent > 0 ? "text-emerald-600" : item.changePercent < 0 ? "text-red-600" : "text-slate-500"
+                        )}>
+                          {item.changePercent > 0 ? "+" : ""}
+                          {item.changePercent.toFixed(2)}%
+                        </span>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        )}
       </CardContent>
     </Card>
   )
 }
-
