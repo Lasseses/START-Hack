@@ -4,7 +4,7 @@ import type React from "react"
 
 import { useDashboard } from "@/context/DashboardContext"
 import { Input } from "@/components/ui/input"
-import { ArrowUp} from "lucide-react"
+import { ArrowUp, Mic } from "lucide-react"
 
 export default function UserInput() {
   const [query, setQuery] = useState<string>("");
@@ -28,13 +28,23 @@ export default function UserInput() {
     <div className="fixed bottom-0 left-0 right-0 py-4 px-4 md:px-8 bg-[#157bdd]/10 backdrop-blur-sm border-t border-[#157bdd]/20 z-10">
       <div className="max-w-5xl mx-auto relative">
         <Input
-          className="bg-white/70 backdrop-blur-sm border-[#157bdd]/30 focus:border-[#157bdd] focus:ring-2 focus:ring-[#157bdd]/20 text-gray-800 pl-4 pr-12 py-3 rounded-full shadow-sm"
+          className="bg-white/70 backdrop-blur-sm border-[#157bdd]/30 focus:border-[#157bdd] focus:ring-2 focus:ring-[#157bdd]/20 text-gray-800 pl-4 pr-24 py-3 rounded-full shadow-sm"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Ask a question about your data..."
           disabled={isLoading}
         />
+        
+        {/* Microphone button */}
+        <button
+          className="absolute right-10 top-1/2 transform -translate-y-1/2 rounded-full p-1.5 bg-transparent hover:bg-slate-100/30 transition-all duration-200 flex items-center justify-center text-slate-500 hover:text-[#157bdd]"
+          aria-label="Voice input"
+        >
+          <Mic className="h-4 w-4" />
+        </button>
+        
+        {/* Submit button */}
         <button
           onClick={handleSubmit}
           disabled={isLoading}
@@ -62,7 +72,6 @@ export default function UserInput() {
           )}
         </button>
       </div>
-
     </div>
   )
 }
