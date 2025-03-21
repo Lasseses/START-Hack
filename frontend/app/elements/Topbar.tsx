@@ -1,6 +1,6 @@
 "use client";
 
-import { User } from 'lucide-react';
+import { Share, User } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { GitBranch } from "lucide-react"
 
@@ -27,6 +27,9 @@ export default function Topbar() {
         
         {/* Icons container */}
         <div className="flex items-center space-x-3">
+        <div className="p-2 rounded-md hover:bg-white/10 transition-all cursor-pointer">
+            <Share className="h-5 w-5 text-white" />
+          </div>
           {/* GitHub branch icon */}
           <div className="p-2 rounded-md hover:bg-white/10 transition-all cursor-pointer">
             <GitBranch className="h-5 w-5 text-white" />

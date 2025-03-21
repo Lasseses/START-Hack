@@ -43,6 +43,13 @@ export async function POST(request: NextRequest) {
     }
 
     const data = await getResponse.json();
+    
+    // Filter out any PIE charts from the backend data
+    // Assuming data has a tiles array that contains the chart tiles
+    if (data.tiles && Array.isArray(data.tiles)) {
+      data.tiles = data.tiles.filter(tile => tile.type !== "PIE");
+    }
+    
     return NextResponse.json(data);
   } catch (error: any) {
     console.error('API Error:', error);

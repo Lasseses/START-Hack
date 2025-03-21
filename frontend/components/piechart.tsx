@@ -1,112 +1,109 @@
-"use client"
-
-import { useState, useEffect } from "react"
-import dynamic from "next/dynamic"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Badge } from "@/components/ui/badge"
-import { PieChart as PieIcon, Info, ArrowRight, Download, ArrowUpDown, Filter } from "lucide-react"
-import type { ApexOptions } from "apexcharts"
+import React, { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Badge } from '@/components/ui/badge';
+import { ArrowUpDown } from 'lucide-react';
 
 // Dynamic import to avoid SSR issues
-const ReactApexChart = dynamic(() => import("react-apexcharts"), { ssr: false })
+const ReactApexChart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
-interface PieChartProps {
-  pieSeries: {
-    series: number[];
-    labels: string[];
-    colors?: string[];
+// Flexible PieChart component that accepts different data formats
+export default function FlexiblePieChart(props) {
+  // Process different input formats
+  const processData = () => {
+    // Format 1: Raw data array with asset/allocation or name/value properties
+    if (Array.isArray(props.data)) {
+      const labels = [];
+      const series = [];
+      
+      props.data.forEach(item => {
+        // Support different property naming conventions
+        const label = item.asset || item.name || item.label || item.category || '';
+        const value = item.allocation || item.value || item.count || item.size || 0;
+        
+        labels.push(label);
+        series.push(value);
+      });
+      
+      return { series, labels };
+    }
+    // Format 2: Already formatted pieSeries object
+    else if (props.pieSeries) {
+      return props.pieSeries;
+    }
+    // Format 3: Direct series and labels arrays
+    else if (Array.isArray(props.series) && Array.isArray(props.labels)) {
+      return {
+        series: props.series,
+        labels: props.labels,
+        colors: props.colors
+      };
+    }
+    
+    // Default empty data
+    return { series: [], labels: [] };
   };
-  metadata?: {
-    title?: string;
-    description?: string;
-    fullWidth?: boolean;
-    showLegend?: boolean;
-    showLabels?: boolean;
-    showTotal?: boolean;
-    donut?: boolean;
-    monochrome?: boolean;
-    valuePrefix?: string;
-    valueSuffix?: string;
-    enableSelection?: boolean;
-    enableGradient?: boolean;
-    pattern?: boolean;
-    enableAnimations?: boolean;
-    legendPosition?: "top" | "bottom" | "right";
-  };
-}
-
-export default function PieChart({ pieSeries, metadata }: PieChartProps) {
-  const [chartType, setChartType] = useState<string>(metadata?.donut ? "donut" : "pie")
-  const [selectedSlices, setSelectedSlices] = useState<number[]>([])
-  const [sortType, setSortType] = useState<string>("none")
   
-  // Sort data if needed
-  const sortData = () => {
-    if (sortType === "none") return pieSeries;
-    
-    const combined = pieSeries.series.map((value, idx) => ({
-      value,
-      label: pieSeries.labels[idx],
-      color: pieSeries.colors ? pieSeries.colors[idx] : undefined
-    }));
-    
-    combined.sort((a, b) => {
-      if (sortType === "value") {
-        return b.value - a.value; // descending by value
-      } else if (sortType === "value-asc") {
-        return a.value - b.value; // ascending by value
-      } else if (sortType === "alpha") {
-        return a.label.localeCompare(b.label); // alphabetical
-      } else if (sortType === "alpha-desc") {
-        return b.label.localeCompare(a.label); // reverse alphabetical
-      }
-      return 0;
-    });
+  // Process metadata from different sources
+  const getMetadata = () => {
+    if (props.metadata) {
+      return props.metadata;
+    }
     
     return {
-      series: combined.map(item => item.value),
-      labels: combined.map(item => item.label),
-      colors: pieSeries.colors ? combined.map(item => item.color) : undefined
+      title: props.title || "Data Distribution",
+      description: props.description || "",
+      donut: props.donut !== undefined ? props.donut : true,
+      showLegend: props.showLegend !== undefined ? props.showLegend : true,
+      showLabels: props.showLabels !== undefined ? props.showLabels : true,
+      showTotal: props.showTotal !== undefined ? props.showTotal : true,
+      enableGradient: props.enableGradient !== undefined ? props.enableGradient : false
     };
   };
   
-  const processedSeries = sortType !== "none" ? sortData() : pieSeries;
+  // Process data and metadata
+  const pieSeries = processData();
+  const metadata = getMetadata();
   
-  // Default colors if none provided - professional palette
+  // Base colors if none provided
   const baseColors = [
-    "#4F87C5", 
-    "#6EAF89",
-    "#CC6B73",
-    "#8E74BB",
-    "#E19052",
-    "#71A8D7",
-    "#88C7A0",
-    "#D6868E",
-    "#A487CA",
-    "#EEA877" 
-];
+    "#4F87C5", // Blue
+    "#6EAF89", // Green
+    "#CC6B73", // Red
+    "#8E74BB", // Purple
+    "#E19052", // Orange
+    "#71A8D7", // Light Blue
+    "#88C7A0", // Light Green
+    "#D6868E", // Light Red
+    "#A487CA", // Light Purple
+    "#EEA877"  // Light Orange
+  ];
   
-  // Apply gradient effect if enabled
-  const getColors = () => {
-    if (!metadata?.enableGradient) return baseColors;
-    
-    // For gradients, we need to define them in the fill.gradient
-    return baseColors;
-  };
+  // Use provided colors or default
+  const chartColors = pieSeries.colors || props.colors || baseColors;
   
-  // Calculate total sum
-  const total = processedSeries.series.reduce((acc, val) => acc + val, 0);
+  const [chartType, setChartType] = useState(metadata.donut ? "donut" : "pie");
+  const [sortType, setSortType] = useState("none");
+  
+  // Calculate total
+  const total = pieSeries.series.reduce((acc, val) => acc + val, 0);
   
   // Formatting functions
-  const formatPercent = (value: number) => {
+  const formatPercent = (value) => {
     return ((value / total) * 100).toFixed(1) + "%";
   };
   
-  const formatValue = (value: number) => {
-    const prefix = metadata?.valuePrefix || "";
-    const suffix = metadata?.valueSuffix || "";
+  const formatValue = (value) => {
+    const prefix = metadata.valuePrefix || "";
+    const suffix = metadata.valueSuffix || "";
     
+    // If the total is 100, assume we're working with percentages
+    if (total === 100) {
+      return prefix + value.toFixed(1) + "%" + suffix;
+    }
+    
+    // Otherwise, format based on the magnitude
     if (value >= 1000000) {
       return prefix + (value / 1000000).toFixed(1) + "M" + suffix;
     } else if (value >= 1000) {
@@ -114,14 +111,14 @@ export default function PieChart({ pieSeries, metadata }: PieChartProps) {
     }
     return prefix + value.toFixed(0) + suffix;
   };
-
-  // Get top/bottom performers
+  
+  // Get outliers (highest, lowest, etc.)
   const getOutliers = () => {
-    if (processedSeries.series.length < 3) return null;
+    if (pieSeries.series.length < 3) return null;
     
-    const sorted = [...processedSeries.series].map((value, index) => ({ 
+    const sorted = [...pieSeries.series].map((value, index) => ({ 
       value, 
-      label: processedSeries.labels[index],
+      label: pieSeries.labels[index],
       percent: (value / total) * 100
     })).sort((a, b) => b.value - a.value);
     
@@ -133,15 +130,15 @@ export default function PieChart({ pieSeries, metadata }: PieChartProps) {
   };
   
   const outliers = getOutliers();
-
-  // Customize chart options
-  const pieOptions: ApexOptions = {
+  
+  // Chart options
+  const chartOptions = {
     chart: {
-      type: chartType === "donut" ? "donut" : "pie",
+      type: chartType,
       background: "transparent",
       fontFamily: "'Inter', 'SF Pro Display', sans-serif",
       animations: {
-        enabled: metadata?.enableAnimations !== false,
+        enabled: metadata.enableAnimations !== false,
         easing: "easeinout",
         speed: 800,
         animateGradually: {
@@ -160,62 +157,29 @@ export default function PieChart({ pieSeries, metadata }: PieChartProps) {
         blur: 3,
         opacity: 0.1,
         color: '#000'
-      },
-      events: {
-        dataPointSelection: function(event, chartContext, config) {
-          if (metadata?.enableSelection) {
-            const seriesIndex = config.dataPointIndex;
-            setSelectedSlices(prev => {
-              if (prev.includes(seriesIndex)) {
-                return prev.filter(idx => idx !== seriesIndex);
-              } else {
-                return [...prev, seriesIndex];
-              }
-            });
-          }
-        },
-        legendClick: function(chartContext, seriesIndex, config) {
-          if (metadata?.enableSelection) {
-            setSelectedSlices(prev => {
-              if (prev.includes(seriesIndex)) {
-                return prev.filter(idx => idx !== seriesIndex);
-              } else {
-                return [...prev, seriesIndex];
-              }
-            });
-          }
-        }
       }
     },
-    colors: getColors(),
+    colors: chartColors,
     fill: {
-      type: metadata?.pattern ? "pattern" : (metadata?.enableGradient ? "gradient" : "solid"),
-      gradient: metadata?.enableGradient ? {
+      type: metadata.pattern ? "pattern" : (metadata.enableGradient ? "gradient" : "solid"),
+      gradient: metadata.enableGradient ? {
         shade: 'dark',
         type: "horizontal",
-        gradientToColors: baseColors.map(color => {
-          // Lighten the color for gradient
-          return color.replace(/^#/, '').match(/.{2}/g)?.map(hex => {
-            const val = Math.min(255, parseInt(hex, 16) + 40);
-            return val.toString(16).padStart(2, '0');
-          }).join('') || color;
-        }),
         shadeIntensity: 0.65,
         opacityFrom: 1,
         opacityTo: 1,
         stops: [0, 100]
       } : undefined,
-      pattern: metadata?.pattern ? {
+      pattern: metadata.pattern ? {
         style: 'squares',
         width: 6,
         height: 6,
         strokeWidth: 1
       } : undefined,
-      opacity: 1,
     },
-    labels: processedSeries.labels,
+    labels: pieSeries.labels,
     legend: {
-      position: metadata?.legendPosition || "right",
+      position: metadata.legendPosition || "right",
       horizontalAlign: "center",
       fontFamily: "'Inter', 'SF Pro Display', sans-serif",
       fontSize: "11px",
@@ -223,28 +187,23 @@ export default function PieChart({ pieSeries, metadata }: PieChartProps) {
       markers: {
         width: 8,
         height: 8,
-        radius: 2,
-        offsetX: 0,
-        offsetY: 0,
+        radius: 2
       },
       itemMargin: {
         horizontal: 8,
         vertical: 3
       },
       formatter: function(seriesName, opts) {
-        const percent = formatPercent(processedSeries.series[opts.seriesIndex]);
+        const percent = formatPercent(pieSeries.series[opts.seriesIndex]);
         return `<div class="flex items-center">
           <span class="mr-1">${seriesName}</span>
           <span style="font-weight:600;color:#334155">${percent}</span>
         </div>`;
       },
-      onItemClick: {
-        toggleDataSeries: metadata?.enableSelection || false
-      },
       onItemHover: {
         highlightDataSeries: true
       },
-      show: metadata?.showLegend !== false,
+      show: metadata.showLegend !== false
     },
     states: {
       hover: {
@@ -292,7 +251,7 @@ export default function PieChart({ pieSeries, metadata }: PieChartProps) {
               }
             },
             total: {
-              show: metadata?.showTotal !== false && chartType === "donut",
+              show: metadata.showTotal !== false && chartType === "donut",
               label: 'Total',
               fontSize: '13px',
               fontFamily: "'Inter', 'SF Pro Display', sans-serif",
@@ -308,12 +267,12 @@ export default function PieChart({ pieSeries, metadata }: PieChartProps) {
       }
     },
     dataLabels: {
-      enabled: metadata?.showLabels !== false,
+      enabled: metadata.showLabels !== false,
       style: {
         fontSize: '10px',
         fontFamily: "'Inter', 'SF Pro Display', sans-serif",
         fontWeight: 600,
-        colors: ['#fff'],
+        colors: ['#fff']
       },
       dropShadow: {
         enabled: true,
@@ -324,10 +283,8 @@ export default function PieChart({ pieSeries, metadata }: PieChartProps) {
         opacity: 0.45
       },
       formatter: function(val, opts) {
-        return formatPercent(processedSeries.series[opts.seriesIndex]);
-      },
-      textAnchor: 'middle',
-      distributed: true,
+        return formatPercent(pieSeries.series[opts.seriesIndex]);
+      }
     },
     stroke: {
       width: chartType === "donut" ? 2 : 1,
@@ -344,46 +301,7 @@ export default function PieChart({ pieSeries, metadata }: PieChartProps) {
       y: {
         formatter: (value) => {
           return `${formatValue(value)} (${formatPercent(value)})`;
-        },
-        title: {
-          formatter: (seriesName) => seriesName
         }
-      },
-      marker: {
-        show: false,
-      },
-      custom: ({ series, seriesIndex, dataPointIndex, w }) => {
-        const value = processedSeries.series[seriesIndex];
-        const label = processedSeries.labels[seriesIndex];
-        const color = baseColors[seriesIndex % baseColors.length];
-        const percent = formatPercent(value);
-        const formattedValue = formatValue(value);
-        
-        return `
-          <div class="tooltip-wrapper" style="background: #FFFFFF; border-radius: 4px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); padding: 8px 10px; min-width: 140px;">
-            <div class="tooltip-header" style="display: flex; align-items: center; margin-bottom: 4px;">
-              <span style="display: inline-block; width: 8px; height: 8px; background-color: ${color}; margin-right: 6px;"></span>
-              <span style="font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600; color: #334155;">${label}</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; padding: 6px 0px; border-top: 1px solid #F1F5F9;">
-              <span style="font-family: 'Inter', sans-serif; font-size: 11px; color: #64748B;">Value:</span>
-              <span style="font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; color: #334155;">${formattedValue}</span>
-            </div>
-            <div style="display: flex; justify-content: space-between;">
-              <span style="font-family: 'Inter', sans-serif; font-size: 11px; color: #64748B;">Percentage:</span>
-              <span style="font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; color: #334155;">${percent}</span>
-            </div>
-            
-            ${series.length > 2 ? `
-            <div style="display: flex; justify-content: space-between; margin-top: 6px; padding-top: 6px; border-top: 1px solid #F1F5F9;">
-              <span style="font-family: 'Inter', sans-serif; font-size: 11px; color: #64748B;">Rank:</span>
-              <span style="font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; color: #334155;">
-                ${[...series].sort((a, b) => b - a).indexOf(value) + 1} of ${series.length}
-              </span>
-            </div>
-            ` : ''}
-          </div>
-        `;
       }
     },
     responsive: [
@@ -392,7 +310,7 @@ export default function PieChart({ pieSeries, metadata }: PieChartProps) {
         options: {
           legend: {
             position: "bottom",
-            fontSize: "11px",
+            fontSize: "11px"
           },
           dataLabels: {
             minAngleToShowLabel: 20
@@ -403,43 +321,66 @@ export default function PieChart({ pieSeries, metadata }: PieChartProps) {
   };
   
   // Handle monochrome mode
-  if (metadata?.monochrome) {
-    pieOptions.plotOptions = {
-      ...pieOptions.plotOptions,
+  if (metadata.monochrome) {
+    chartOptions.plotOptions = {
+      ...chartOptions.plotOptions,
       pie: {
-        ...pieOptions.plotOptions?.pie,
+        ...chartOptions.plotOptions.pie,
         monochrome: {
           enabled: true,
-          color: '#0E72CC', // Bloomberg blue
+          color: '#0E72CC',
           shadeTo: 'light',
           shadeIntensity: 0.65
         }
       }
     };
   }
-  
-  // Get metadata or use default values
-  const title = metadata?.title || "Distribution Analysis";
-  const description = "";
+
+  // Sort data if needed
+  useEffect(() => {
+    if (sortType === "none") return;
+    
+    const combined = pieSeries.series.map((value, idx) => ({
+      value,
+      label: pieSeries.labels[idx]
+    }));
+    
+    combined.sort((a, b) => {
+      if (sortType === "value") {
+        return b.value - a.value; // descending by value
+      } else if (sortType === "value-asc") {
+        return a.value - b.value; // ascending by value
+      } else if (sortType === "alpha") {
+        return a.label.localeCompare(b.label); // alphabetical
+      } else if (sortType === "alpha-desc") {
+        return b.label.localeCompare(a.label); // reverse alphabetical
+      }
+      return 0;
+    });
+    
+    pieSeries.series = combined.map(item => item.value);
+    pieSeries.labels = combined.map(item => item.label);
+  }, [sortType]);
+
   return (
     <Card className="border-slate-200 shadow overflow-hidden h-[40vh] min-h-[320px] border-0 shadow-md relative w-full flex flex-col">
       <CardHeader className="bg-slate-50 border-b border-slate-200 py-1.5 px-4 bg-gradient-to-br from-indigo-500/10 to-cyan-500/10">
         <div className="flex justify-between items-center">
           <div className="flex flex-col">
             <div className="flex items-center">
-              <CardTitle className="text-slate-800 text-sm font-semibold">{title}</CardTitle>
+              <CardTitle className="text-slate-800 text-sm font-semibold">{metadata.title}</CardTitle>
               {outliers && 
                 <Badge variant="outline" className="ml-2 px-1.5 py-0 h-4 text-xs font-medium border-slate-300 text-slate-600">
                   {outliers.topThree.toFixed(0)}% in top 3
                 </Badge>
               }
             </div>
-            <CardDescription className="text-xs mt-0">{description}</CardDescription>
+            <CardDescription className="text-xs mt-0">{metadata.description}</CardDescription>
           </div>
           
           <div className="flex items-center space-x-2">
             {/* Only show sorting dropdown if it makes sense */}
-            {processedSeries.series.length > 2 && (
+            {pieSeries.series.length > 2 && (
               <div className="relative inline-block">
                 <select
                   className="appearance-none bg-slate-100 text-xs py-0.5 pl-2 pr-6 rounded h-5 border-0 focus:outline-none focus:ring-1 focus:ring-slate-300 text-slate-700"
@@ -472,15 +413,14 @@ export default function PieChart({ pieSeries, metadata }: PieChartProps) {
       
       <CardContent className="p-0 flex-1 w-full h-[calc(100%-60px)] bg-white/80">
         <ReactApexChart
-          options={pieOptions}
-          series={processedSeries.series}
-          type={chartType === "donut" ? "donut" : "pie"}
+          options={chartOptions}
+          series={pieSeries.series}
+          type={chartType}
           height="100%"
           width="100%"
         />
       </CardContent>
       
-      {/* Optional footer with additional metrics */}
       {outliers && (
         <CardFooter className="py-1.5 px-4 border-t border-slate-200 bg-slate-50 flex justify-between bg-gradient-to-br from-indigo-500/20 to-cyan-500/20 h-auto">
           <div className="flex text-xs text-slate-600 items-center">
@@ -496,5 +436,5 @@ export default function PieChart({ pieSeries, metadata }: PieChartProps) {
         </CardFooter>
       )}
     </Card>
-  )
+  );
 }

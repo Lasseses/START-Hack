@@ -59,6 +59,22 @@ const DataTable = dynamic<DataTableProps>(() => import("@/components/datatable")
   loading: () => <Skeleton className="w-full h-[300px] rounded-lg" />,
 });
 
+// Hardcoded asset allocation data for the pie chart
+const hardcodedPieData = {
+  pieSeries: {
+    series: [30, 20, 15, 10, 10, 10, 5],
+    labels: ["Domestic Stocks", "International Stocks", "Corporate Bonds", "Government Bonds", "Real Estate", "Cash & Equivalents", "Crypto"]
+  },
+  metadata: {
+    title: "John Doe's Asset Allocation",
+    description: "Portfolio distribution across asset classes",
+    donut: true,
+    showLegend: true,
+    showLabels: true,
+    showTotal: true
+  }
+};
+
 // Component to render the appropriate tile based on type
 const TileRenderer: React.FC<{ tile: Tile }> = ({ tile }) => {
   const renderTile = () => {
@@ -68,7 +84,12 @@ const TileRenderer: React.FC<{ tile: Tile }> = ({ tile }) => {
       case "AREA":
         return <AreaChart areaSeries={tile.data} metadata={tile.metadata} />;
       case "PIE":
-        return <PieChart pieSeries={tile.data} metadata={tile.metadata} />;
+        // Special case for the hardcoded PIE with asset allocation
+        if (tile.hardcoded) {
+          return <PieChart pieSeries={hardcodedPieData.pieSeries} metadata={hardcodedPieData.metadata} />;
+        }
+        // Don't render non-hardcoded PIE charts
+        return null;
       case "BAR":
         return <BarChart barSeries={tile.data} metadata={tile.metadata} />;
       case "TABLE":
@@ -102,9 +123,21 @@ export default function Dashboard() {
     );
   }
 
-  // Separate tables from other tiles
+  // Create a hardcoded pie chart tile
+  const hardcodedPieTile = {
+    type: "PIE",
+    hardcoded: true,
+    metadata: hardcodedPieData.metadata
+  };
+
+  // Separate tables from other tiles (excluding the hardcoded pie)
   const tableTiles = tiles.filter(tile => tile.type === "TABLE");
-  const otherTiles = tiles.filter(tile => tile.type !== "TABLE");
+  
+  // Get non-table tiles without adding the hardcoded pie, and filter out non-hardcoded PIE charts
+  const nonTableTiles = tiles.filter(tile => tile.type !== "TABLE" && (tile.type !== "PIE" || tile.hardcoded));
+  
+  // Always add the hardcoded pie chart first
+  const otherTiles = [hardcodedPieTile, ...nonTableTiles];
 
   return (
     <div className="w-full mt-20 mx-auto p-4 h-full overflow-y-auto">
@@ -116,9 +149,9 @@ export default function Dashboard() {
           <Skeleton className="w-full h-[300px] rounded-lg" />
           <Skeleton className="w-full h-[300px] rounded-lg" />
         </div>
-      ) : tiles.length > 0 ? (
+      ) : nonTableTiles.length > 0 || tableTiles.length > 0 ? (
         <div className="">
-          {/* Non-table tiles in grid layout */}
+          {/* Non-table tiles in grid layout, including the hardcoded pie chart */}
           {otherTiles.length > 0 && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
               {otherTiles.map((tile, index) => (
@@ -144,7 +177,7 @@ export default function Dashboard() {
           )}
         </div>
       ) : (
-        // Initial state or empty dashboard
+        // Initial welcome state without the hardcoded pie chart
         <div className="text-center py-12">
           <h2 className="text-xl font-semibold mt-10 mb-2">Welcome to your AssetIQ Dashboard</h2>
           <p className="text-zinc-400 mb-8">Create and modify your dashboard by describing your needs via the form below.</p>
