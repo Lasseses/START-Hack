@@ -1,63 +1,68 @@
 // context/DashboardContext.tsx
 "use client";
-import React, { createContext, useState, useContext, ReactNode } from "react";
+import { createContext, useContext, useState, ReactNode } from "react";
 import { Tile } from "@/types/dashboard";
+import { mapApiResponseToTiles } from "@/utils/dashboardMapper";
 
 interface DashboardContextType {
   tiles: Tile[];
   isLoading: boolean;
   error: string | null;
-  fetchTiles: (query: string) => Promise<void>;
+  fetchDashboard: (query: string) => Promise<void>;
 }
 
-const DashboardContext = createContext<DashboardContextType | undefined>(undefined);
+const DashboardContext = createContext<DashboardContextType>({
+  tiles: [],
+  isLoading: false,
+  error: null,
+  fetchDashboard: async () => {},
+});
 
-interface DashboardProviderProps {
-  children: ReactNode;
-}
-
-export function DashboardProvider({ children }: DashboardProviderProps) {
+export const DashboardProvider = ({ children }: { children: ReactNode }) => {
   const [tiles, setTiles] = useState<Tile[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchTiles = async (query: string) => {
+  const fetchDashboard = async (query: string) => {
+    setIsLoading(true);
+    setError(null);
+
     try {
-      setIsLoading(true);
-      setError(null);
-      
-      const response = await fetch('/api/dashboard', {
-        method: 'POST',
+      const response = await fetch("/api/dashboard", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ query }),
       });
-      
+
       if (!response.ok) {
-        throw new Error('Failed to fetch dashboard data');
+        throw new Error(`API error: ${response.status}`);
       }
-      
+
       const data = await response.json();
-      setTiles(data.tiles);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An unknown error occurred');
+
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
+      // Map the API response to the dashboard tiles format
+      const mappedTiles = mapApiResponseToTiles(data);
+      setTiles(mappedTiles);
+    } catch (err: any) {
+      console.error("Dashboard fetch error:", err);
+      setError(err.message || "Failed to load dashboard data");
+      setTiles([]);
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <DashboardContext.Provider value={{ tiles, isLoading, error, fetchTiles }}>
+    <DashboardContext.Provider value={{ tiles, isLoading, error, fetchDashboard }}>
       {children}
     </DashboardContext.Provider>
   );
-}
+};
 
-export function useDashboard() {
-  const context = useContext(DashboardContext);
-  if (context === undefined) {
-    throw new Error('useDashboard must be used within a DashboardProvider');
-  }
-  return context;
-}
+export const useDashboard = () => useContext(DashboardContext);

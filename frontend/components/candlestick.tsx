@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import dynamic from "next/dynamic"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import type { ApexOptions } from "apexcharts"
 
@@ -14,10 +14,12 @@ interface CandleStickChartProps {
     x: string | number | Date
     y: [number, number, number, number]
     volume?: number
+    title?: string
   }[]
+  title?: string // Add title prop
 }
 
-export default function CandleStickChart({ candlestickData }: CandleStickChartProps) {
+export default function CandleStickChart({ candlestickData, title = "Candlestick Chart" }: CandleStickChartProps) {
   const [timeframe, setTimeframe] = useState<string>("all")
 
   // Daten nach Zeitraum filtern
@@ -67,7 +69,6 @@ export default function CandleStickChart({ candlestickData }: CandleStickChartPr
   const candlestickOptions: ApexOptions = {
     chart: {
       type: "candlestick",
-      height: 250,
       toolbar: {
         show: true,
         tools: {
@@ -88,15 +89,7 @@ export default function CandleStickChart({ candlestickData }: CandleStickChartPr
       fontFamily: "Inter, sans-serif",
       id: "candles",
     },
-    title: {
-      text: "Kursverlauf",
-      align: "left",
-      style: {
-        fontSize: "16px",
-        fontWeight: 600,
-        color: "#334155",
-      },
-    },
+  
     grid: {
       borderColor: "#f1f5f9",
       strokeDashArray: 2,
@@ -225,7 +218,6 @@ export default function CandleStickChart({ candlestickData }: CandleStickChartPr
   const volumeOptions: ApexOptions = {
     chart: {
       type: "bar",
-      height: 80,
       toolbar: {
         show: false,
       },
@@ -315,12 +307,12 @@ export default function CandleStickChart({ candlestickData }: CandleStickChartPr
   }
 
   return (
-    <Card className="border-slate-200 shadow-md">
-      <CardHeader className="bg-slate-50 border-b border-slate-200 pb-2  bg-gradient-to-br from-indigo-500/20 to-cyan-500/20">
+
+    <Card className="border-slate-200 shadow-md h-[40vh] min-h-[320px]">
+      <CardHeader className="bg-slate-50 border-b border-slate-200 pb-2 h-auto  bg-gradient-to-br from-indigo-500/20 to-cyan-500/20">
         <div className="flex justify-between items-center">
           <div>
-            <CardTitle className="text-slate-800 text-xl">Candlestick Chart</CardTitle>
-            <CardDescription>Kursverlauf im Zeitraum</CardDescription>
+            <CardTitle className="text-slate-800 text-xl">{title}</CardTitle>
           </div>
           <Tabs defaultValue="all" value={timeframe} onValueChange={setTimeframe} className="w-auto">
             <TabsList className="bg-slate-100">
@@ -343,25 +335,26 @@ export default function CandleStickChart({ candlestickData }: CandleStickChartPr
           </Tabs>
         </div>
       </CardHeader>
-      <CardContent className="p-0 pt-2">
-        <div className="h-[250px]">
+      <CardContent className="p-0 pt-2 flex flex-col h-[calc(100%-60px)]">
+        <div className="h-[70%]">
           <ReactApexChart
             options={candlestickOptions}
             series={[{ data: filteredData }]}
             type="candlestick"
             height="100%"
+            width="100%"
           />
         </div>
-        <div className="h-[80px] mt-1">
+        <div className="h-[30%] mt-1">
           <ReactApexChart
             options={volumeOptions}
             series={[{ name: "Volumen", data: volumeData }]}
             type="bar"
             height="100%"
+            width="100%"
           />
         </div>
       </CardContent>
     </Card>
   )
 }
-

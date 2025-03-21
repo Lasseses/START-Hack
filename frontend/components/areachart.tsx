@@ -29,9 +29,6 @@ interface AreaChartProps {
 export default function AreaChart({ areaSeries, metadata }: AreaChartProps) {
   const [timeframe, setTimeframe] = useState<string>("all")
   
-  // Fixed chart height based on container height minus header and optional footer
-  const chartHeight = 220; // Fixed chart area height to fit within card
-
   // Time frame filtering
   const getFilteredData = () => {
     if (timeframe === "all") return areaSeries
@@ -239,7 +236,6 @@ export default function AreaChart({ areaSeries, metadata }: AreaChartProps) {
   const areaOptions: ApexOptions = {
     chart: {
       type: "area",
-      height: chartHeight,
       stacked: false,
       background: "transparent",
       toolbar: {
@@ -568,7 +564,6 @@ export default function AreaChart({ areaSeries, metadata }: AreaChartProps) {
 
   // Get metadata or use default values
   const title = metadata?.title || "Performance Analysis";
-  const description = metadata?.description || "Trend analysis over time";
 
   // Format performance number with color and arrow
   const formatPerformance = (value: number) => {
@@ -591,8 +586,8 @@ export default function AreaChart({ areaSeries, metadata }: AreaChartProps) {
   };
 
   return (
-    <Card className="border-slate-200 shadow overflow-hidden h-full w-full flex flex-col">
-      <CardHeader className="border-b border-slate-200 py-1.5 px-4 bg-gradient-to-br from-indigo-500/10 to-cyan-500/10">
+    <Card className="border-slate-200 shadow overflow-hidden h-[40vh] min-h-[320px] w-full flex flex-col">
+      <CardHeader className="border-b border-slate-200 py-1.5 px-4 bg-gradient-to-br from-indigo-500/10 to-cyan-500/10 h-auto">
         <div className="flex justify-between items-center">
           <div className="flex flex-col">
             <div className="flex items-center">
@@ -603,7 +598,7 @@ export default function AreaChart({ areaSeries, metadata }: AreaChartProps) {
                 </Badge>
               }
             </div>
-            <CardDescription className="text-xs mt-0">{description}</CardDescription>
+           
           </div>
           <Tabs defaultValue="all" value={timeframe} onValueChange={setTimeframe} className="w-auto">
             <TabsList className="bg-slate-100 h-5 px-1">
@@ -645,7 +640,7 @@ export default function AreaChart({ areaSeries, metadata }: AreaChartProps) {
         )}
       </CardHeader>
       
-      <CardContent className="py-6 flex-1 w-full bg-white">
+      <CardContent className="py-6 flex-1 w-full bg-white h-[calc(100%-60px)]">
         <ReactApexChart
           options={areaOptions}
           series={[...filteredSeries, ...benchmarkSeries]}
@@ -657,7 +652,7 @@ export default function AreaChart({ areaSeries, metadata }: AreaChartProps) {
       
       {/* Optional footer with additional metrics */}
       {performanceData.length > 0 && (
-        <CardFooter className="py-1.5 px-4 border-t border-slate-200 flex justify-between bg-gradient-to-br from-indigo-500/10 to-cyan-500/10">
+        <CardFooter className="py-1.5 px-4 border-t border-slate-200 flex justify-between bg-gradient-to-br from-indigo-500/10 to-cyan-500/10 h-auto">
           <div className="flex text-xs text-slate-500 items-center">
             <FileBarChart className="h-3.5 w-3.5 mr-1 text-slate-400" />
             <span className="font-medium mr-1">Volatility:</span>
