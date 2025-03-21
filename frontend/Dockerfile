@@ -13,11 +13,6 @@ COPY package.json package-lock.json* ./
 
 # Install dependencies including uuid
 RUN npm ci
-# If you need additional dependencies that might be missing
-RUN npm install uuid
-# If you use yarn or pnpm, use these instead
-# RUN yarn install --frozen-lockfile && yarn add uuid
-# RUN pnpm install --frozen-lockfile && pnpm add uuid
 
 # Build the application
 FROM base AS builder
@@ -26,7 +21,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Set environment variables for build
-ENV NODE_ENV=production
+ENV NODE_ENV=development
 ENV NEXT_TELEMETRY_DISABLED=1
 
 # Build Next.js app
