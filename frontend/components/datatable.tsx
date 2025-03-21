@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react"
+import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { cn } from "@/lib/utils"
@@ -18,6 +18,8 @@ interface DataTableProps {
     fullWidth?: boolean
     columnTypes?: { [key: string]: string }
     columnOrder?: string[]
+    height?: string // Custom height for the table container
+    width?: string // Custom width for the table container
   }
 }
 
@@ -180,11 +182,13 @@ export default function DynamicDataTable({ tableData = [], metadata }: DataTable
   };
 
   const title = metadata?.title || "Data Table";
+  const tableHeight = metadata?.height || "400px";
+  const tableWidth = metadata?.width || "100%";
 
   return (
-    <Card className="border-0 shadow-sm overflow-hidden">
+    <Card className="border-0 shadow-sm overflow-hidden" style={{ width: tableWidth }}>
       {title && (
-        <CardHeader className="bg-white border-b py-3 px-4">
+        <CardHeader className="bg-white border-b py-3 px-4 bg-gradient-to-br from-indigo-500/20 to-cyan-500/20">
           <CardTitle className="text-lg font-medium text-slate-800">{title}</CardTitle>
         </CardHeader>
       )}
@@ -194,50 +198,60 @@ export default function DynamicDataTable({ tableData = [], metadata }: DataTable
             No data available
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <Table className="w-full">
-              <TableHeader>
-                <TableRow className="bg-slate-50">
-                  {columns.map((column) => (
-                    <TableHead
-                      key={column}
-                      onClick={() => handleSort(column)}
-                      className={cn(
-                        "cursor-pointer py-3 px-4 text-xs font-semibold uppercase tracking-wide text-slate-700 whitespace-nowrap",
-                        getColumnAlignment(column) === "right" ? "text-right" : 
-                        getColumnAlignment(column) === "center" ? "text-center" : "text-left"
-                      )}
-                    >
-                      <div className={cn(
-                        "flex items-center",
-                        getColumnAlignment(column) === "right" ? "justify-end" : 
-                        getColumnAlignment(column) === "center" ? "justify-center" : "justify-start"
-                      )}>
-                        {formatColumnHeader(column)} {getSortIcon(column)}
-                      </div>
-                    </TableHead>
-                  ))}
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {sortedData.map((item, index) => (
-                  <TableRow key={index} className="hover:bg-slate-50 border-b border-slate-100">
+          <div className="relative">
+            {/* Table container with fixed height and scrollbars */}
+            <div 
+              className="overflow-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent" 
+              style={{ 
+                height: tableHeight,
+                maxHeight: tableHeight,
+                width: "100%"
+              }}
+            >
+              <Table className="w-full">
+                <TableHeader className="sticky top-0 z-10">
+                  <TableRow className="bg-slate-50">
                     {columns.map((column) => (
-                      <TableCell 
-                        key={`${index}-${column}`}
+                      <TableHead
+                        key={column}
+                        onClick={() => handleSort(column)}
                         className={cn(
-                          "py-3 px-4",
+                          "cursor-pointer py-3 px-4 text-xs font-semibold uppercase tracking-wide text-slate-700 whitespace-nowrap",
                           getColumnAlignment(column) === "right" ? "text-right" : 
                           getColumnAlignment(column) === "center" ? "text-center" : "text-left"
                         )}
                       >
-                        {formatCellContent(item[column], column)}
-                      </TableCell>
+                        <div className={cn(
+                          "flex items-center",
+                          getColumnAlignment(column) === "right" ? "justify-end" : 
+                          getColumnAlignment(column) === "center" ? "justify-center" : "justify-start"
+                        )}>
+                          {formatColumnHeader(column)} {getSortIcon(column)}
+                        </div>
+                      </TableHead>
                     ))}
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {sortedData.map((item, index) => (
+                    <TableRow key={index} className="hover:bg-slate-50 border-b border-slate-100">
+                      {columns.map((column) => (
+                        <TableCell 
+                          key={`${index}-${column}`}
+                          className={cn(
+                            "py-3 px-4",
+                            getColumnAlignment(column) === "right" ? "text-right" : 
+                            getColumnAlignment(column) === "center" ? "text-center" : "text-left"
+                          )}
+                        >
+                          {formatCellContent(item[column], column)}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           </div>
         )}
       </CardContent>
