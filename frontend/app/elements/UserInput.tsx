@@ -8,12 +8,12 @@ import { ArrowUp} from "lucide-react"
 
 export default function UserInput() {
   const [query, setQuery] = useState<string>("");
-  const { fetchTiles, isLoading } = useDashboard();
+  const { fetchDashboard, isLoading } = useDashboard();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (query.trim()) {
-      fetchTiles(query);
+      fetchDashboard(query);
       setQuery("");
     }
   }
