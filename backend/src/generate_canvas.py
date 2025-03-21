@@ -162,14 +162,7 @@ def main():
     logging.info("### Starting a new run of canvas generation. ###")
     user_input = input("Enter user input: ")
     context = input("Enter context (optional): ")
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    # Create a task for the coroutine
-    task = loop.create_task(generate_canvas(user_input, context))
-    try:
-        canvas = loop.run_until_complete(task)
-    finally:
-        loop.close()
+    canvas = asyncio.run(generate_canvas(user_input, context))
 
 
 if __name__ == "__main__":
