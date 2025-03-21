@@ -4,6 +4,7 @@ import time
 import threading
 import os
 import sys
+import asyncio
 
 backend_path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.append(backend_path)
@@ -61,7 +62,7 @@ def trigger_workflow(session_id: str, prompt: str):
     # Update the timestamp when the session is accessed
     update_session_timestamp(session_id)
     # This is where you would trigger the workflow to execute the dashboard
-    canvas = generate_canvas(user_input=prompt, canvas_context="")
+    canvas = asyncio.run(generate_canvas(user_input=prompt, canvas_context=""))
     if len(canvas) == 0:
         logging.warning("Canvas is empty. No tiles generated.")
     else:
