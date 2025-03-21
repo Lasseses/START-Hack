@@ -62,7 +62,14 @@ def trigger_workflow(session_id: str, prompt: str):
     # Update the timestamp when the session is accessed
     update_session_timestamp(session_id)
     # This is where you would trigger the workflow to execute the dashboard
-    canvas = asyncio.run(generate_canvas(user_input=prompt, canvas_context=""))
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    task = loop.create_task(generate_canvas(user_input=prompt, canvas_context=""))
+    try:
+        canvas = loop.run_until_complete(task)
+    finally:
+        loop.close()
+
     if len(canvas) == 0:
         logging.warning("Canvas is empty. No tiles generated.")
     else:
