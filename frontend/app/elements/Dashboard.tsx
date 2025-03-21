@@ -11,7 +11,7 @@ import Lottie from "lottie-react";
 // Adjust the path to match where your .lottie file is stored
 import animationData from "@/public/animations/main_page.json";
 
-// Typisiere die Props für jede Komponente
+// Interface definitions for component props
 interface CandleStickChartProps {
   candlestickData: CandlestickData[];
   metadata?: any;
@@ -24,21 +24,12 @@ interface AreaChartProps {
 
 interface PieChartProps {
   pieSeries: PieData;
-  metadata?: {
-    title?: string;
-    description?: string;
-    showLegend?: boolean;
-    showLabels?: boolean;
-    showTotal?: boolean;
-    donut?: boolean;
-  };
+  metadata?: any;
 }
 
 interface BarChartProps {
-  barSeries: {
-    name: string;
-    data: number[];
-  }[];
+  barSeries: BarData[];
+  metadata?: any;
 }
 
 interface DataTableProps {
@@ -46,7 +37,7 @@ interface DataTableProps {
   metadata?: any;
 }
 
-// Dynamischer Import der Komponenten
+// Dynamic component imports
 const CandleStickChart = dynamic<CandleStickChartProps>(() => import("@/components/candlestick"), {
   ssr: false,
   loading: () => <Skeleton className="w-full h-[300px] rounded-lg" />,
@@ -68,26 +59,34 @@ const DataTable = dynamic<DataTableProps>(() => import("@/components/datatable")
   loading: () => <Skeleton className="w-full h-[300px] rounded-lg" />,
 });
 
-// Komponente zur Auswahl des richtigen Tile-Typs
+// Component to render the appropriate tile based on type
 const TileRenderer: React.FC<{ tile: Tile }> = ({ tile }) => {
-  switch (tile.type) {
-    case "candlestick":
-      return <CandleStickChart candlestickData={tile.data} metadata={tile.metadata} />;
-    case "pie":
-      return <PieChart pieSeries={tile.data} metadata={tile.metadata} />;
-    case "bar":
-      return <BarChart barSeries={tile.data} metadata={tile.metadata} />;
-    case "area":
-      return <AreaChart areaSeries={tile.data} metadata={tile.metadata} />;
-    case "table":
-      return <DataTable tableData={tile.data} metadata={tile.metadata} />;
-    default:
-      return (
-        <div className="bg-zinc-800 p-4 rounded-lg">
-          <p>Unbekannter Tile-Typ: {tile.type}</p>
-        </div>
-      );
-  }
+  const renderTile = () => {
+    switch (tile.type) {
+      case "CANDLE":
+        return <CandleStickChart candlestickData={tile.data} metadata={tile.metadata} />;
+      case "AREA":
+        return <AreaChart areaSeries={tile.data} metadata={tile.metadata} />;
+      case "PIE":
+        return <PieChart pieSeries={tile.data} metadata={tile.metadata} />;
+      case "BAR":
+        return <BarChart barSeries={tile.data} metadata={tile.metadata} />;
+      case "TABLE":
+        return <DataTable tableData={tile.data} metadata={tile.metadata} />;
+      default:
+        return (
+          <div className="bg-zinc-800 p-2 rounded-lg">
+            <p>Unknown tile type: {tile.type}</p>
+          </div>
+        );
+    }
+  };
+
+  return (
+   
+      <div className="p-4">{renderTile()}</div>
+
+  );
 };
 
 export default function Dashboard() {
@@ -108,24 +107,24 @@ export default function Dashboard() {
   return (
     <div className="w-full mt-20 mx-auto p-4 h-full overflow-y-auto">
       {isLoading ? (
-        // Lade-Zustand
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        // Loading state
+        <div className="grid grid-cols-1 md:grid-cols-2 ">
           <Skeleton className="w-full h-[300px] rounded-lg" />
           <Skeleton className="w-full h-[300px] rounded-lg" />
           <Skeleton className="w-full h-[300px] rounded-lg" />
           <Skeleton className="w-full h-[300px] rounded-lg" />
         </div>
       ) : tiles.length > 0 ? (
-        // Dynamisches Grid-Layout basierend auf den Tile-Größen
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        // Dynamic grid layout based on tile sizes
+        <div className="grid grid-cols-1 md:grid-cols-2">
           {tiles.map((tile, index) => (
             <div
               key={index}
               className={`${
                 tile.metadata?.fullWidth
                   ? "col-span-full"
-                  : tile.type === "table"
-                  ? "col-span-2"
+                  : tile.type === "TABLE"
+                  ? "col-span-full"
                   : ""
               }`}
             >
@@ -134,13 +133,13 @@ export default function Dashboard() {
           ))}
         </div>
       ) : (
-        // Anfangszustand oder leeres Dashboard
+        // Initial state or empty dashboard
         <div className="text-center py-12">
           <h2 className="text-xl font-semibold mt-10 mb-2">Welcome to your AssetIQ Dashboard</h2>
           <p className="text-zinc-400 mb-8">Create and modify your dashboard by describing your needs via the form below.</p>
 
           {/* Lottie Animation */}
-          <div className="w-[400px] h-[400px] md:w-[500px] md:h-[500px] mx-auto">
+          <div className="w-[350px] h-[350px] mx-auto">
             <Lottie 
               animationData={animationData} 
               loop={true} 

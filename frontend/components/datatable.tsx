@@ -85,7 +85,7 @@ export default function DataTable({ tableData = [], metadata }: DataTableProps) 
   }
 
   const title = metadata?.title || "Marktdaten"
-  const description = metadata?.description || "Historische Aktienkursinformationen"
+  const description = ""
 
   return (
     <Card className="border-slate-200 shadow-md">

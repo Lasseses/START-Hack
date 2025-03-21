@@ -2,6 +2,7 @@
 
 import { User } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { GitBranch } from "lucide-react"
 
 export default function Topbar() {
   const handleRefresh = () => {
@@ -12,7 +13,7 @@ export default function Topbar() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 border-b border-[#ffffff]/50 bg-[#27354A]/100 backdrop-blur-sm px-4 py-3.5 z-10">
+    <header className="fixed top-0 left-0 right-0 border-b border-slate-200/30 bg-gradient-to-r from-indigo-500/10 to-cyan-500/10 backdrop-blur-sm px-4 py-3.5 z-10">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
           <h1 
@@ -33,8 +34,18 @@ export default function Topbar() {
             </ul>
           </nav>
         </div>
-        <div className="text-[#ffffff] p-1.5 rounded-md hover:bg-white/10 transition-all cursor-pointer">
-          <span className="font-bold"><User /></span>
+        
+        {/* Icons container */}
+        <div className="flex items-center space-x-3">
+          {/* GitHub branch icon */}
+          <div className="p-2 rounded-md hover:bg-white/10 transition-all cursor-pointer">
+            <GitBranch className="h-5 w-5 text-white" />
+          </div>
+          
+          {/* User icon */}
+          <div className="p-2 rounded-md hover:bg-white/10 transition-all cursor-pointer">
+            <User className="h-5 w-5 text-white" />
+          </div>
         </div>
       </div>
     </header>

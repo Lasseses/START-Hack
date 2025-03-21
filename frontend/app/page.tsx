@@ -1,6 +1,5 @@
 import { DashboardProvider } from "@/context/DashboardContext";
 import Dashboard from "./elements/Dashboard";
-//import Sidebar from "./elements/Sidebar";
 import Topbar from "./elements/Topbar";
 import UserInput from "./elements/UserInput";
 
@@ -13,7 +12,6 @@ export default function Home() {
         </div>
 
         <div className="flex h-[85vh]">
-          {/*<Sidebar /> */}
           <Dashboard />
         </div>
 
