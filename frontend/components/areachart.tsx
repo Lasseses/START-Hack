@@ -1,3 +1,5 @@
+// This is the modified file where auto-generated Peak/Low annotations have been removed
+
 "use client"
 
 import { useState, useEffect } from "react"
@@ -183,54 +185,10 @@ export default function AreaChart({ areaSeries, metadata }: AreaChartProps) {
     });
   }
   
-  // Generate annotations
+  // Use annotations directly from metadata if provided
   const annotations = metadata?.annotations || {};
   
-  // Auto-generate some annotations if none provided
-  if (!metadata?.annotations && filteredSeries.length > 0 && filteredSeries[0].data.length > 5) {
-    const mainSeries = filteredSeries[0].data;
-    // Find local max/min points for annotations
-    const localExtrema = [];
-    
-    for (let i = 1; i < mainSeries.length - 1; i++) {
-      const prev = mainSeries[i-1].y;
-      const curr = mainSeries[i].y;
-      const next = mainSeries[i+1].y;
-      
-      if ((curr > prev && curr > next) || (curr < prev && curr < next)) {
-        localExtrema.push({
-          x: mainSeries[i].x,
-          y: mainSeries[i].y,
-          type: curr > prev ? 'max' : 'min'
-        });
-      }
-    }
-    
-    // Take most significant extrema (limit to 2-3 points)
-    const sortedExtrema = [...localExtrema].sort((a, b) => 
-      b.type === 'max' ? b.y - a.y : a.y - b.y
-    ).slice(0, 3);
-    
-    // Create annotations
-    annotations.points = sortedExtrema.map(point => ({
-      x: point.x,
-      y: point.y,
-      marker: {
-        size: 6,
-        fillColor: point.type === 'max' ? '#C73443' : '#10803F',
-        strokeColor: '#fff',
-        radius: 3,
-      },
-      label: {
-        borderColor: point.type === 'max' ? '#C73443' : '#10803F',
-        style: {
-          color: '#fff',
-          background: point.type === 'max' ? '#C73443' : '#10803F',
-        },
-        text: point.type === 'max' ? 'Peak' : 'Low'
-      }
-    }));
-  }
+  // No auto-generated annotations - REMOVED the auto-generation of Peak/Low annotations
 
   // Area Chart options
   const areaOptions: ApexOptions = {

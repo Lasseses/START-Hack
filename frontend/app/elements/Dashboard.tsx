@@ -83,9 +83,7 @@ const TileRenderer: React.FC<{ tile: Tile }> = ({ tile }) => {
   };
 
   return (
-   
-      <div className="p-4">{renderTile()}</div>
-
+    <div className="p-4">{renderTile()}</div>
   );
 };
 
@@ -104,33 +102,46 @@ export default function Dashboard() {
     );
   }
 
+  // Separate tables from other tiles
+  const tableTiles = tiles.filter(tile => tile.type === "TABLE");
+  const otherTiles = tiles.filter(tile => tile.type !== "TABLE");
+
   return (
     <div className="w-full mt-20 mx-auto p-4 h-full overflow-y-auto">
       {isLoading ? (
         // Loading state
-        <div className="grid grid-cols-1 md:grid-cols-2 ">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
           <Skeleton className="w-full h-[300px] rounded-lg" />
           <Skeleton className="w-full h-[300px] rounded-lg" />
           <Skeleton className="w-full h-[300px] rounded-lg" />
           <Skeleton className="w-full h-[300px] rounded-lg" />
         </div>
       ) : tiles.length > 0 ? (
-        // Dynamic grid layout based on tile sizes
-        <div className="grid grid-cols-1 md:grid-cols-2">
-          {tiles.map((tile, index) => (
-            <div
-              key={index}
-              className={`${
-                tile.metadata?.fullWidth
-                  ? "col-span-full"
-                  : tile.type === "TABLE"
-                  ? "col-span-full"
-                  : ""
-              }`}
-            >
-              <TileRenderer tile={tile} />
+        <div className="">
+          {/* Non-table tiles in grid layout */}
+          {otherTiles.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+              {otherTiles.map((tile, index) => (
+                <div
+                  key={`chart-${index}`}
+                  className={`${tile.metadata?.fullWidth ? "col-span-full" : ""}`}
+                >
+                  <TileRenderer tile={tile} />
+                </div>
+              ))}
             </div>
-          ))}
+          )}
+
+          {/* Table tiles always shown below */}
+          {tableTiles.length > 0 && (
+            <div className="space-y-2">
+              {tableTiles.map((tile, index) => (
+                <div key={`table-${index}`} className="col-span-full">
+                  <TileRenderer tile={tile} />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       ) : (
         // Initial state or empty dashboard
