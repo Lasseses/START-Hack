@@ -7,12 +7,12 @@ import { ArrowUp } from "lucide-react";
 
 export default function UserInput() {
   const [query, setQuery] = useState<string>("");
-  const { fetchTiles, isLoading } = useDashboard();
+  const { fetchDashboard, isLoading } = useDashboard();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (query.trim()) {
-      fetchTiles(query);
+      fetchDashboard(query);
       setQuery("");
     }
   };
@@ -37,7 +37,7 @@ export default function UserInput() {
         <button
           onClick={handleSubmit}
           disabled={isLoading}
-          className={`absolute right-0 top-1/2 transform -translate-y-1/2 rounded-full p-2 ${
+          className={`absolute right-1 top-1/2 transform -translate-y-1/2 rounded-full p-1  ${
             isLoading ? 'bg-gray-300' : 'bg-[#157bdd]/90'
           } text-white hover:bg-[#157bdd] transition-all duration-200 flex items-center justify-center`}
           aria-label="Submit question"
