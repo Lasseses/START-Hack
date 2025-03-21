@@ -316,7 +316,7 @@ export default function CandleStickChart({ candlestickData }: CandleStickChartPr
 
   return (
     <Card className="border-slate-200 shadow-md">
-      <CardHeader className="bg-slate-50 border-b border-slate-200 pb-2  bg-gradient-to-br from-indigo-500/10 to-cyan-500/10">
+      <CardHeader className="bg-slate-50 border-b border-slate-200 pb-2  bg-gradient-to-br from-indigo-500/20 to-cyan-500/20">
         <div className="flex justify-between items-center">
           <div>
             <CardTitle className="text-slate-800 text-xl">Candlestick Chart</CardTitle>

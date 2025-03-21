@@ -645,7 +645,7 @@ export default function AreaChart({ areaSeries, metadata }: AreaChartProps) {
         )}
       </CardHeader>
       
-      <CardContent className="p-0 flex-1 w-full bg-white">
+      <CardContent className="py-6 flex-1 w-full bg-white">
         <ReactApexChart
           options={areaOptions}
           series={[...filteredSeries, ...benchmarkSeries]}

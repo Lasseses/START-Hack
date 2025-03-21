@@ -2,6 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .custom-spin {
+    animation: spin 1s linear infinite;
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
 @layer base {
   :root {
     --background: hsl(216, 79%, 11%);
@@ -68,5 +91,3 @@
 .vsc-bg {
   background-color: #21252B !important; /* Override with your desired color */
 }
-
-
