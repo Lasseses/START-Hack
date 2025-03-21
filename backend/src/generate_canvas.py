@@ -2,7 +2,7 @@
 import sys
 import os
 import dotenv
-from datetime import datetime
+from datetime import datetime, timedelta
 import logging
 import json
 import asyncio
@@ -98,7 +98,7 @@ async def generate_canvas(user_input: str, canvas_context: str = "") -> list[Dat
 
 async def generate_tool_call(tile: Tile, context: str = "", date: bool = False) -> str:
     if date:
-        current_date = datetime.now().strftime("%Y-%m-%d")
+        current_date = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
     else:
         current_date = ""
 
