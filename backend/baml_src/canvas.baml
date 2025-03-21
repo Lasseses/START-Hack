@@ -12,7 +12,7 @@ enum DiagramType {
   LINE @description("Line chart diagram time. This can show historical stock price data.")
   PIE @description("A pie chart diagram. This can show asset allocation of a person.")
   CANDLE @description("Candle chart diagram. This can show historical stock price data.")
-  TABLE @description("A table. This can be used to find companies or stocks which fufill certain criteria. The tabel will then show the values of these criteria.")
+  TABLE @description("A table. This can be used to find companies or stocks which fulfill certain criteria. The tabel will then show the values of these criteria.")
 }
 // line: call_ohlcv
 // pie: fetch_asset_allocation
