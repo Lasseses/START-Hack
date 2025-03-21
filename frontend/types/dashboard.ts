@@ -24,9 +24,10 @@ export interface CandlestickData {
   volume?: number;
 }
 
-interface PieData {
+export interface PieData {
   series: number[];
   labels: string[];
+  colors?: string[];
 }
 
 export interface BarData {

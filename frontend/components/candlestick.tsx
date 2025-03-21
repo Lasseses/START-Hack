@@ -19,7 +19,7 @@ interface CandleStickChartProps {
   title?: string // Add title prop
 }
 
-export default function CandleStickChart({ candlestickData, title = "Candlestick Chart" }: CandleStickChartProps) {
+export default function CandleStickChart({ candlestickData, title = "Apple Stock Chart" }: CandleStickChartProps) {
   const [timeframe, setTimeframe] = useState<string>("all")
 
   // Daten nach Zeitraum filtern
@@ -312,7 +312,7 @@ export default function CandleStickChart({ candlestickData, title = "Candlestick
       <CardHeader className="bg-slate-50 border-b border-slate-200 pb-2 h-auto  bg-gradient-to-br from-indigo-500/20 to-cyan-500/20">
         <div className="flex justify-between items-center">
           <div>
-            <CardTitle className="text-slate-800 text-xl">{title}</CardTitle>
+            <CardTitle className="text-slate-800 text-md">{title}</CardTitle>
           </div>
           <Tabs defaultValue="all" value={timeframe} onValueChange={setTimeframe} className="w-auto">
             <TabsList className="bg-slate-100">
