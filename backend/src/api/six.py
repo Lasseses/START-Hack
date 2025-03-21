@@ -13,6 +13,7 @@ import json
 import logging
 import os
 import sys
+import httpx
 
 backend_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 sys.path.append(backend_path)
@@ -28,7 +29,7 @@ logging.basicConfig(
 logging.debug("Logging setup complete.")
 
 
-def call_ohlcv(symbol: str, first: str, last: str) -> list[dict]:
+async def call_ohlcv(symbol: str, first: str, last: str) -> list[dict]:
     """
     Retrieve historical OHLCV data for a given company.
 
@@ -53,11 +54,13 @@ def call_ohlcv(symbol: str, first: str, last: str) -> list[dict]:
     )
     logging.info("Request SIX API for OHLCV with: %s, %s, %s", symbol, first, last)
     logging.info("URL: %s", url)
-    response = requests.post(url).json()
+    async with httpx.AsyncClient() as client:
+        response = await client.post(url)
+        response_json = response.json()
     logging.info("Response from SIX API for OHLCV: %s", response)
 
     # Unpack data
-    obj = json.loads(response["object"])
+    obj = json.loads(response_json["object"])
     data = json.loads(obj["data"])
     time_series_raw = json.loads(list(data.values())[0])
 
@@ -80,7 +83,7 @@ def call_ohlcv(symbol: str, first: str, last: str) -> list[dict]:
     return time_series
 
 
-def call_searchwithcriteria(query: str) -> dict:
+async def call_searchwithcriteria(query: str) -> dict:
     """
     Search for companies or stocks based on specified criteria.
 
@@ -151,17 +154,19 @@ def call_searchwithcriteria(query: str) -> dict:
         f"?query={query}"
     )
     logging.info("Request SIX API for search with criteria with query: %s", query)
-    response = requests.post(url).json()
+    async with httpx.AsyncClient() as client:
+        response = await client.post(url)
+        response_json = response.json()
     logging.info("Response from SIX API for search with criteria: %s", response)
 
     # convert six response to rechart format
-    obj = json.loads(response["object"])
+    obj = json.loads(response_json["object"])
     tabular_data = json.loads(obj["data"][0])
 
     return tabular_data
 
 
-def fetch_asset_allocation(customer_name: str) -> list[dict]:
+async def fetch_asset_allocation(customer_name: str) -> list[dict]:
     """
     Retrieves the asset allocation for a specified customer from a JSON file.
 
