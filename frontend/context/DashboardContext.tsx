@@ -47,6 +47,8 @@ export const DashboardProvider = ({ children }: { children: ReactNode }) => {
       }
 
       // Map the API response to the dashboard tiles format
+      // The updated mapApiResponseToTiles function now handles various table data formats,
+      // including the column-wise format with indexed properties
       const mappedTiles = mapApiResponseToTiles(data);
       setTiles(mappedTiles);
     } catch (err: any) {
