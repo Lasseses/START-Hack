@@ -774,7 +774,6 @@ function generateTableSummary(rows: any[], columnTypes: { [key: string]: string 
 }
 
 export {
-    mapApiResponseToTiles,
     mapTableData,
     hasIndexedObjectFormat,
     transformColumnWiseToRowWise

@@ -1,9 +1,10 @@
 // app/api/dashboard/route.ts
 import { NextRequest, NextResponse } from 'next/server';
+import { v4 as uuidv4 } from 'uuid';
 
 const BASE_URL = 'https://start-hack-backend-867796808812.europe-west8.run.app';
-const SESSION_ID = process.env.SESSION_ID || '10';
-const API_KEY = process.env.API_KEY || '8917239871289129389';
+const SESSION_ID = uuidv4();
+const API_KEY = process.env.API_KEY;
 
 export async function POST(request: NextRequest) {
   try {
