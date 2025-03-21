@@ -38,7 +38,7 @@ export default function UserInput() {
         <button
           onClick={handleSubmit}
           disabled={isLoading}
-          className={`absolute right-1 top-1/2 transform -translate-y-1/2 rounded-full p-2 ${
+          className={`absolute right-1 top-1/2 transform -translate-y-1/2 rounded-full p-1 ${
             isLoading ? "bg-[#157bdd]/20" : 'bg-[#157bdd]/90'
           } text-white hover:bg-[#157bdd] transition-all duration-200 flex items-center justify-center`}
           aria-label="Submit question"
