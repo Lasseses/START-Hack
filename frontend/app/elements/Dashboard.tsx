@@ -139,7 +139,7 @@ export default function Dashboard() {
           <p className="text-zinc-400 mb-8">Create and modify your dashboard by describing your needs via the form below.</p>
 
           {/* Lottie Animation */}
-          <div className="w-[350px] h-[350px] md:w-[300px] md:h-[300px] mx-auto">
+          <div className="w-[350px] h-[350px] mx-auto">
             <Lottie 
               animationData={animationData} 
               loop={true} 
