@@ -7,29 +7,42 @@ WORKDIR /app
 
 # Copy package files
 COPY package.json package-lock.json* ./
-# If you use yarn or pnpm, copy their lock files too
-# COPY package.json yarn.lock* ./
-# COPY package.json pnpm-lock.yaml* ./
 
-# Install dependencies including uuid
+# Install dependencies including required packages for shadcn/ui
 RUN npm ci
+RUN npm install uuid clsx tailwind-merge class-variance-authority
 
 # Build the application
 FROM base AS builder
 WORKDIR /app
+
+# Copy dependencies
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+# Ensure lib directory and utils.ts exist with correct contents
+RUN mkdir -p lib
+RUN echo 'import { type ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
+ 
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}' > lib/utils.ts
+
+# Verify the file exists
+RUN ls -la lib/
+RUN cat lib/utils.ts
+
 # Set environment variables for build
-ENV NODE_ENV=development
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV NODE_PATH=/app/node_modules
+ENV PATH=$PATH:/app/node_modules/.bin
 
 # Build Next.js app
+RUN npm cache clean --force
+RUN ls -la
+RUN ls -la lib/
 RUN npm run build
-
-# If using standalone output in next.config.js, uncomment these lines instead:
-# ENV NEXT_OUTPUT_STANDALONE true
-# RUN npm run build
 
 # Production image, copy all files and run next
 FROM base AS runner
@@ -46,7 +59,6 @@ USER nextjs
 
 # Copy built application
 COPY --from=builder /app/public ./public
-# Copy the entire .next directory
 COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
 COPY --from=builder --chown=nextjs:nodejs /app/package.json ./package.json
