@@ -22,17 +22,7 @@ export default function Topbar() {
           >
             AssetIQ Dashboard
           </h1>
-          <nav className="hidden md:flex">
-            <ul className="flex space-x-2">
-              <li className="text-sm text-white-600 hover:text-[#ffffff] px-3 py-1.5 rounded-md hover:bg-white/10 transition-all cursor-pointer select-none">REGN</li>
-              <li className="text-sm text-white-600 hover:text-[#ffffff] px-3 py-1.5 rounded-md hover:bg-white/10 transition-all cursor-pointer select-none">CELG</li>
-              <li className="text-sm text-white-600 hover:text-[#ffffff] px-3 py-1.5 rounded-md hover:bg-white/10 transition-all cursor-pointer select-none">GILD</li>
-              <li className="text-sm text-white-600 hover:text-[#ffffff] px-3 py-1.5 rounded-md hover:bg-white/10 transition-all cursor-pointer select-none">Future</li>
-              <li className="text-sm text-white-600 hover:text-[#ffffff] px-3 py-1.5 rounded-md hover:bg-white/10 transition-all cursor-pointer select-none">Worldwide Bond Overview</li>
-              <li className="text-sm text-white-600 hover:text-[#ffffff] px-3 py-1.5 rounded-md hover:bg-white/10 transition-all cursor-pointer select-none">World Markets</li>
-              <li className="text-sm text-white-600 hover:text-[#ffffff] px-3 py-1.5 rounded-md hover:bg-white/10 transition-all cursor-pointer select-none">MKT Global</li>
-            </ul>
-          </nav>
+      
         </div>
         
         {/* Icons container */}
