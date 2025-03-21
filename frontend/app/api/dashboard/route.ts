@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 const BASE_URL = 'https://start-hack-backend-867796808812.europe-west8.run.app';
-const SESSION_ID = process.env.SESSION_ID || '2';
+const SESSION_ID = process.env.SESSION_ID || '10';
 const API_KEY = process.env.API_KEY || '8917239871289129389';
 
 export async function POST(request: NextRequest) {

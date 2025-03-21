@@ -42,7 +42,7 @@ export function mapApiResponseToTiles(apiResponse: any[]): Tile[] {
  */
 function mapCandlestickData(item: any, metadata: any): Tile {
     const candlestickData: CandlestickData[] = (item.data || []).map((d: any) => ({
-        x: d.name || new Date(d.date || "").toISOString(),
+        x: d.name || new Date(d.date || "").toString(),
         y: [
             d.open || 0,
             d.high || 0,
