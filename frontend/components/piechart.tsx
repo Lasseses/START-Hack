@@ -189,28 +189,9 @@ export default function PieChart({ pieSeries, metadata }: PieChartProps) {
     },
     colors: getColors(),
     fill: {
-      type: metadata?.pattern ? "pattern" : (metadata?.enableGradient ? "gradient" : "solid"),
-      gradient: metadata?.enableGradient ? {
-        shade: 'dark',
-        type: "horizontal",
-        gradientToColors: baseColors.map(color => {
-          // Lighten the color for gradient
-          return color.replace(/^#/, '').match(/.{2}/g)?.map(hex => {
-            const val = Math.min(255, parseInt(hex, 16) + 40);
-            return val.toString(16).padStart(2, '0');
-          }).join('') || color;
-        }),
-        shadeIntensity: 0.65,
-        opacityFrom: 1,
-        opacityTo: 1,
-        stops: [0, 100]
-      } : undefined,
-      pattern: metadata?.pattern ? {
-        style: 'squares',
-        width: 6,
-        height: 6,
-        strokeWidth: 1
-      } : undefined,
+      type: "solid",
+      gradient: undefined,
+      pattern: undefined,
       opacity: 1,
     },
     labels: processedSeries.labels,
